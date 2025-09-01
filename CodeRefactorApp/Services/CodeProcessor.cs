@@ -1,46 +1,33 @@
-﻿namespace CodeRefactorApp.Services
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Rename;
+using Microsoft.CodeAnalysis;
+
+class AsyncVmDtoRewriter : CSharpSyntaxRewriter
 {
-    using System.Text.RegularExpressions;
+    private readonly SemanticModel _model;
+    private readonly Solution _solution;
 
-    namespace CodeRefactorApp
+    public AsyncVmDtoRewriter(SemanticModel model, Solution solution)
     {
-        public static class CodeProcessor
-        {
-            public static string Process(string code)
-            {
-                string result = code;
-
-                // (a) Add Async suffix to async methods without it
-                result = Regex.Replace(result,
-                    @"async\s+Task(?:<[^>]+>)?\s+([A-Za-z0-9_]+)\s*\(",
-                    match =>
-                    {
-                        string methodName = match.Groups[1].Value;
-                        if (!methodName.EndsWith("Async"))
-                        {
-                            return match.Value.Replace(methodName, methodName + "Async");
-                        }
-                        return match.Value;
-                    });
-
-                // (b) Normalize suffixes Vm/Vms/Dto/Dtos
-                result = Regex.Replace(result, @"\b(\w*?)(Vm|Vms|Dto|Dtos)\b", m =>
-                {
-                    return m.Groups[1].Value + m.Groups[2].Value
-                        .Replace("Vm", "VM")
-                        .Replace("Vms", "VMs")
-                        .Replace("Dto", "DTO")
-                        .Replace("Dtos", "DTOs");
-                });
-
-                // (c) Ensure blank line between methods
-                result = Regex.Replace(result,
-                    @"\}\s*\n\s*(public|private|protected|internal)\s",
-                    "}\n\n $1 ");
-
-                return result;
-            }
-        }
+        _model = model;
+        _solution = solution;
     }
 
+    public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
+    {
+        if (node.Modifiers.Any(SyntaxKind.AsyncKeyword) && !node.Identifier.Text.EndsWith("Async"))
+        {
+            var symbol = _model.GetDeclaredSymbol(node);
+            if (symbol != null)
+            {
+                string newName = node.Identifier.Text + "Async";
+                // Use _solution instead of _model.Compilation.Solution
+                Renamer.RenameSymbolAsync(_solution, symbol, newName, _solution.Workspace.Options).Wait();
+                node = node.WithIdentifier(SyntaxFactory.Identifier(newName));
+            }
+        }
+
+        return base.VisitMethodDeclaration(node);
+    }
 }
