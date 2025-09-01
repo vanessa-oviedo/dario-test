@@ -6,7 +6,7 @@ using Wheelzy.Application.Interfaces.Service;
 namespace Wheelzy.Api.Controllers;
 
 [ApiController]
-[Route("orders/{orderId:int}/quotes")]
+[Route("orders/quotes")]
 public sealed class QuotesController : ControllerBase
 {
     private readonly IQuoteService _quotesService;

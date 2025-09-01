@@ -37,6 +37,7 @@ namespace Wheelzy.Infrastructure
             services.AddScoped<IBuyerZipCoverageReadRepository, BuyerZipCoverageReadRepository>();
             services.AddScoped<IOrderBuyerQuoteWriteRepository, OrderBuyerQuoteWriteRepository>();
             services.AddScoped<IOrderBuyerQuoteReadRepository, OrderBuyerQuoteReadRepository>();
+            services.AddScoped<IOrderBuyerQuoteRepository, OrderBuyerQuoteRepository>(); 
 
             return services;
         }

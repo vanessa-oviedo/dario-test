@@ -6,15 +6,25 @@ namespace Wheelzy.Infrastructure.Configurations
 {
     public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
     {
-        public void Configure(EntityTypeBuilder<Customer> b)
+        public void Configure(EntityTypeBuilder<Customer> e)
         {
-            b.ToTable("Customer");
-            b.HasKey(x => x.CustomerId);
+            e.ToTable("Customer");
+            e.HasKey(x => x.CustomerId);
 
-            b.Property(x => x.Name).HasMaxLength(200).IsRequired();
-            b.HasIndex(x => x.Name).IsUnique();
+            e.Property(x => x.Name).IsRequired().HasMaxLength(200).IsUnicode(false);
+            e.Property(x => x.ZipCode)
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(5)
+                .IsUnicode(false);
 
-            b.Property(x => x.Balance).HasColumnType("money").HasDefaultValue(0);
+            e.Property(x => x.Balance).HasColumnType("money").HasDefaultValue(0);
+            e.HasIndex(x => x.Name).IsUnique();
+
+            e.HasOne(x => x.ZipCodeRef)
+                .WithMany(x => x.Customers)
+                .HasForeignKey(x => x.ZipCode)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

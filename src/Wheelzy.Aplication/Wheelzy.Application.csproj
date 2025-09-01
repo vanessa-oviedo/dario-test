@@ -8,17 +8,15 @@
 
   <ItemGroup>
     <Compile Remove="DTOs\Buyer\**" />
+    <Compile Remove="Mapping\**" />
     <EmbeddedResource Remove="DTOs\Buyer\**" />
+    <EmbeddedResource Remove="Mapping\**" />
     <None Remove="DTOs\Buyer\**" />
+    <None Remove="Mapping\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Mapping\Profiles\" />
-    <Folder Include="Mapping\Registration\" />
   </ItemGroup>
 
 </Project>

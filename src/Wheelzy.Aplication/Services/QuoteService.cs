@@ -1,7 +1,10 @@
 using Wheelzy.Application.Interfaces;
 using Wheelzy.Application.Interfaces.Repositories;
 using Wheelzy.Application.Interfaces.Service;
+using Wheelzy.Application.Interfaces.Strategy;
+using Wheelzy.Application.Models;
 using Wheelzy.Application.Requests;
+using Wheelzy.Application.Strategy;
 
 namespace Wheelzy.Application.Services;
 
@@ -12,22 +15,22 @@ public sealed class QuoteService : IQuoteService
     private readonly IClock _clock;
     private readonly IBuyerZipCoverageReadRepository _coverageRepository;
     private readonly IOrderBuyerQuoteWriteRepository _quotesRepository;
-    private readonly IOrderBuyerQuoteReadRepository _quotesReadRepository;
+    private readonly IOrderBuyerQuoteRepository _orderBuyerQuoteRepository;
 
-    public QuoteService(IOrderRepository orderRepository, 
-        IUnitOfWork uow, IClock clock, 
-        IOrderBuyerQuoteWriteRepository quotesRepository, 
-        IBuyerZipCoverageReadRepository coverageRepository, 
-        IOrderBuyerQuoteReadRepository quotesReadRepository)
+    public QuoteService(IOrderRepository orderRepository,
+        IUnitOfWork uow, IClock clock,
+        IOrderBuyerQuoteWriteRepository quotesRepository,
+        IBuyerZipCoverageReadRepository coverageRepository,
+        IOrderBuyerQuoteRepository orderBuyerQuoteRepository)
     {
         _orderRepository = orderRepository;
-        _uow   = uow;
+        _uow = uow;
         _clock = clock;
         _coverageRepository = coverageRepository;
         _quotesRepository = quotesRepository;
-        _quotesReadRepository = quotesReadRepository;
+        _orderBuyerQuoteRepository = orderBuyerQuoteRepository;
     }
-    
+
 
     public async Task<int> GenerateBaseQuotes(CreateQuoteRequest request, CancellationToken ct = default)
     {
@@ -51,26 +54,23 @@ public sealed class QuoteService : IQuoteService
 
             newQuoteId = await _quotesRepository.Add(request.OrderId, buyerZipCoverageId, amountUsed, now, ct);
 
+            //Here logic setting the current quote.
+            await SetCurrentQuote(request.OrderId, request.ZipCode, ct);
+
             await _uow.SaveChanges(ct);
         }, ct);
 
-        return newQuoteId; 
+        return newQuoteId;
     }
 
-    public async Task SetCurrentQuote(int orderId, int? orderBuyerQuoteId, CancellationToken t = default)
+    public async Task SetCurrentQuote(int orderId, string zipCode, CancellationToken t = default)
     {
-        await _uow.ExecuteInTransactionAsync(async (_) =>
-        {
-            if (orderBuyerQuoteId.HasValue)
-            {
-                var exists = await _quotesReadRepository.ExistsForOrderAsync(orderId, orderBuyerQuoteId.Value, t);
-                if (!exists)
-                    throw new InvalidOperationException(
-                        $"Quote {orderBuyerQuoteId.Value} does not belong to Order {orderId}.");
-            }
+        var quoteSelector = new QuoteSelector(new MaxAmountQuoteStrategy(_orderBuyerQuoteRepository)).GetBestQuote(orderId).Result;
 
-            await _orderRepository.SetCurrentBuyerQuote(orderId, orderBuyerQuoteId, t);
-            await _uow.SaveChanges(t);
-        }, t);
+        if (quoteSelector.FirstOrDefault() == null)
+            throw new InvalidOperationException(
+                $"Test");
+
+        await _orderRepository.SetCurrentBuyerQuote(orderId, quoteSelector.FirstOrDefault().OrderBuyerQuoteId, zipCode, t);
     }
 }

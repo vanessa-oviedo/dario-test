@@ -13,6 +13,7 @@ namespace Wheelzy.Infrastructure.Persistence
         public DbSet<CarModel> CarModels => Set<CarModel>();
         public DbSet<CarSubmodel> CarSubmodels => Set<CarSubmodel>();
         public DbSet<Car> Cars => Set<Car>();
+        public DbSet<CustomerCar> CustomerCars => Set<CustomerCar>();
         public DbSet<Customer> Customers => Set<Customer>();
         public DbSet<Invoice> Invoices => Set<Invoice>();
         public DbSet<Order> Orders => Set<Order>();
