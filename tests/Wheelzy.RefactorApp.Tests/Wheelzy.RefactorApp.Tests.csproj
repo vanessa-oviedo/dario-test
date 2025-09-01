@@ -15,6 +15,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\src\Wheelzy.RefactorApp\Wheelzy.RefactorApp.csproj" />
+	  <ProjectReference Include="..\..\src\Wheelzy.RefactorApp\Wheelzy.RefactorApp.csproj" />
 	</ItemGroup>
 </Project>

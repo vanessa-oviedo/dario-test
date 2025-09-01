@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheelzy.Infrastructure", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheelzy.RefactorApp", "src\Wheelzy.RefactorApp\Wheelzy.RefactorApp.csproj", "{52608241-EE0F-BD4A-9331-1A782251B4ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheelzy.RefactorApp.Tests", "Wheelzy.RefactorApp.Tests\Wheelzy.RefactorApp.Tests.csproj", "{45558500-CC3B-4DE5-8B74-25B23904AE04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheelzy.RefactorApp.Tests", "tests\Wheelzy.RefactorApp.Tests\Wheelzy.RefactorApp.Tests.csproj", "{0EF9F8A8-B2AE-6572-8470-C9D8587ED9AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{52608241-EE0F-BD4A-9331-1A782251B4ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52608241-EE0F-BD4A-9331-1A782251B4ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52608241-EE0F-BD4A-9331-1A782251B4ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45558500-CC3B-4DE5-8B74-25B23904AE04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45558500-CC3B-4DE5-8B74-25B23904AE04}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45558500-CC3B-4DE5-8B74-25B23904AE04}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45558500-CC3B-4DE5-8B74-25B23904AE04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EF9F8A8-B2AE-6572-8470-C9D8587ED9AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EF9F8A8-B2AE-6572-8470-C9D8587ED9AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EF9F8A8-B2AE-6572-8470-C9D8587ED9AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EF9F8A8-B2AE-6572-8470-C9D8587ED9AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
