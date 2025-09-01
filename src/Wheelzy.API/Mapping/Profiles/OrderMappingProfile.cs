@@ -13,7 +13,7 @@ public sealed class OrderMappingProfile : Profile
                src.OrderId ?? 0,       
                src.BuyerId ?? 0,
                src.ZipCode ?? string.Empty, 
-               src.AmountOverride,     
+               src.Amount,     
                null,                  
                DateTime.UtcNow     
            ));

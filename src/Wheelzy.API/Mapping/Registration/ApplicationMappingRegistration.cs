@@ -1,6 +1,6 @@
 using Wheelzy.API.Mapping.Profiles;
 
-namespace Wheelzy.Application.Mapping.Registration
+namespace Wheelzy.API.Mapping.Registration
 {
     public static class ApplicationMappingRegistration
     {

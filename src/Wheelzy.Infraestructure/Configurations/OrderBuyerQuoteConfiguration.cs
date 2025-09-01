@@ -12,7 +12,7 @@ namespace Wheelzy.Infrastructure.Configurations
             b.HasKey(x => x.OrderBuyerQuoteId);
 
             b.Property(x => x.OrderBuyerQuoteId)
-                .UseIdentityColumn()     // fuerza IDENTITY(1,1)
+                .UseIdentityColumn()    
                 .ValueGeneratedOnAdd();
 
             b.Property(x => x.Amount).HasColumnType("money");
@@ -32,7 +32,6 @@ namespace Wheelzy.Infrastructure.Configurations
                 .IsUnique()
                 .HasDatabaseName("UQ_Quote_Per_Case_Buyer");
 
-            // Soporte a la FK compuesta (principal key simulada con índice único)
             b.HasIndex(x => new { x.OrderBuyerQuoteId, x.OrderId })
                 .IsUnique()
                 .HasDatabaseName("UX_OrderBuyerQuote_Id_OrderId");

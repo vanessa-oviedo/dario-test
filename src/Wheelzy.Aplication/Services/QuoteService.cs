@@ -53,6 +53,7 @@ public sealed class QuoteService : IQuoteService
             newQuoteId = quote.OrderBuyerQuoteId;
             
             await SetCurrentQuote(request.OrderId, request.ZipCode, newQuoteId, amountUsed, ct);
+
         }, ct);
 
         return newQuoteId;

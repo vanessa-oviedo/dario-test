@@ -1,5 +1,5 @@
 using Wheelzy.Infrastructure;
-using Wheelzy.Application.Mapping.Registration;
+using Wheelzy.API.Mapping.Registration;
 
 var builder = WebApplication.CreateBuilder(args);
 

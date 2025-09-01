@@ -19,18 +19,9 @@ public sealed class QuotesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<int>> GenerateBase([FromBody] CreateQuoteRequest body, CancellationToken ct) //TODO: DONT USE OBJECT
+    public async Task<ActionResult<int>> GenerateBase([FromBody] CreateQuoteRequest body, CancellationToken ct)
     {
         var inserted = await _quotesService.GenerateBaseQuotes(_mapper.Map<Wheelzy.Application.Requests.CreateQuoteRequest>(body), ct);
         return Ok(inserted);
     }
-
-    /// <summary>Setea la cotización actual.</summary>
-    //[HttpPost("current")]
-    //public async Task<IActionResult> SetCurrent([FromRoute] int caseId, [FromBody] SetCurrentQuoteDto body, CancellationToken ct)
-    //{
-    //    var dto = new SetCurrentQuoteDto { CaseId = caseId, BuyerId = body.BuyerId, WhenUtc = body.WhenUtc };
-    //    await _quotes.SetCurrentQuoteAsync(dto, ct);
-    //    return NoContent();
-    //}
 }
