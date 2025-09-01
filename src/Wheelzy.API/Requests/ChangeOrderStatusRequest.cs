@@ -3,7 +3,7 @@ using Wheelzy.Application.Enums;
 
 namespace Wheelzy.API.Requests
 {
-    public class ChangeCaseStatusRequest
+    public class ChangeOrderStatusRequest
     {
         [Required]
         public int? OrderId { get; init; }
