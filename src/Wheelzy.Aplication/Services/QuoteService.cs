@@ -1,80 +1,76 @@
-using Wheelzy.Application.DTOs.Case;
 using Wheelzy.Application.Interfaces;
 using Wheelzy.Application.Interfaces.Repositories;
 using Wheelzy.Application.Interfaces.Service;
-using Wheelzy.Application.Models;
+using Wheelzy.Application.Requests;
 
 namespace Wheelzy.Application.Services;
 
 public sealed class QuoteService : IQuoteService
 {
-    private readonly IOrderRepository _orders;
-    private readonly IRateRepository _rates;
+    private readonly IOrderRepository _orderRepository;
     private readonly IUnitOfWork _uow;
     private readonly IClock _clock;
-    private readonly IBuyerZipCoverageReadRepository _coverage;
-    private readonly IOrderBuyerQuoteWriteRepository _quotes;
-    private readonly IOrderBuyerQuoteReadRepository _quotesRead;
+    private readonly IBuyerZipCoverageReadRepository _coverageRepository;
+    private readonly IOrderBuyerQuoteWriteRepository _quotesRepository;
+    private readonly IOrderBuyerQuoteReadRepository _quotesReadRepository;
 
-    public QuoteService(IOrderRepository orders, IRateRepository rates, IUnitOfWork uow, IClock clock, IOrderBuyerQuoteWriteRepository quotes, IBuyerZipCoverageReadRepository coverage, IOrderBuyerQuoteReadRepository quotesRead)
+    public QuoteService(IOrderRepository orderRepository, 
+        IUnitOfWork uow, IClock clock, 
+        IOrderBuyerQuoteWriteRepository quotesRepository, 
+        IBuyerZipCoverageReadRepository coverageRepository, 
+        IOrderBuyerQuoteReadRepository quotesReadRepository)
     {
-        _orders = orders;
-        _rates = rates;
+        _orderRepository = orderRepository;
         _uow   = uow;
         _clock = clock;
-        _orders = orders;
-        _coverage = coverage;
-        _quotes = quotes;
-        _quotesRead = quotesRead;
+        _coverageRepository = coverageRepository;
+        _quotesRepository = quotesRepository;
+        _quotesReadRepository = quotesReadRepository;
     }
     
 
-    public async Task<int> GenerateBaseQuotesAsync(CreateQuoteCommand cmd, CancellationToken ct = default)
+    public async Task<int> GenerateBaseQuotes(CreateQuoteRequest request, CancellationToken ct = default)
     {
-        var now = cmd.NowUtc ?? DateTime.UtcNow;
+        var now = DateTime.UtcNow;
         var newQuoteId = 0;
         decimal amountUsed = 0m;
 
         await _uow.ExecuteInTransactionAsync(async (_) =>
         {
-            // 1) ZIP real de la order (fuente de verdad)
-            var orderZip = await _orders.GetOrderZipAsync(cmd.OrderId, ct);
+            var orderZip = await _orderRepository.GetOrderZip(request.OrderId, ct);
 
-            // 2) Validar cobertura Buyer × ZIP (trae BuyerZipCoverageId y default)
-            var cov = await _coverage.GetCoverageAsync(cmd.BuyerId, orderZip, ct);
+            var cov = await _coverageRepository.GetCoverage(request.BuyerId, orderZip, ct);
             if (cov is null)
-                throw new InvalidOperationException($"Buyer {cmd.BuyerId} cannot quote on ZIP {orderZip}.");
+                throw new InvalidOperationException($"Buyer {request.BuyerId} cannot quote on ZIP {orderZip}.");
 
             var (buyerZipCoverageId, defaultAmount) = cov.Value;
 
-            // 3) Determinar monto (override o default de cobertura)
-            amountUsed = cmd.AmountOverride ?? defaultAmount;
+            amountUsed = request.AmountOverride ?? defaultAmount;
             if (amountUsed <= 0)
-                throw new ArgumentOutOfRangeException(nameof(cmd.AmountOverride), "Amount must be > 0.");
+                throw new ArgumentOutOfRangeException(nameof(request.AmountOverride), "Amount must be > 0.");
 
-            // 4) Insertar la quote (NO marcar current acá)
-            newQuoteId = await _quotes.AddAsync(cmd.OrderId, buyerZipCoverageId, amountUsed, now, ct);
+            newQuoteId = await _quotesRepository.Add(request.OrderId, buyerZipCoverageId, amountUsed, now, ct);
 
-            await _uow.SaveChangesAsync(ct);
+            await _uow.SaveChanges(ct);
         }, ct);
 
         return newQuoteId; 
     }
 
-    public async Task SetCurrentQuoteAsync(long orderId, long? orderBuyerQuoteId, CancellationToken t = default)
+    public async Task SetCurrentQuote(int orderId, int? orderBuyerQuoteId, CancellationToken t = default)
     {
         await _uow.ExecuteInTransactionAsync(async (_) =>
         {
             if (orderBuyerQuoteId.HasValue)
             {
-                var exists = await _quotesRead.ExistsForOrderAsync(orderId, orderBuyerQuoteId.Value, t);
+                var exists = await _quotesReadRepository.ExistsForOrderAsync(orderId, orderBuyerQuoteId.Value, t);
                 if (!exists)
                     throw new InvalidOperationException(
                         $"Quote {orderBuyerQuoteId.Value} does not belong to Order {orderId}.");
             }
 
-            await _orders.SetCurrentBuyerQuoteAsync(orderId, orderBuyerQuoteId, t);
-            await _uow.SaveChangesAsync(t);
+            await _orderRepository.SetCurrentBuyerQuote(orderId, orderBuyerQuoteId, t);
+            await _uow.SaveChanges(t);
         }, t);
     }
 }

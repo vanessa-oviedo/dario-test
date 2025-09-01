@@ -1,32 +1,20 @@
 ﻿using Wheelzy.Application.Interfaces.Queries;
-using Wheelzy.Application.Models;
 
 namespace Wheelzy.Application.Interfaces.Repositories
 {
     public interface IOrderRepository
     {
-        Task<Order?> GetByIdAsync(int caseId, bool includeRelated = true, CancellationToken ct = default);
+        Task<int> Add(int customerId, int carId, string zipCode, DateTime now, CancellationToken token);
+        Task SetCurrentStatus(int orderId, int statusId, DateTime? statusDateUtc, CancellationToken ct);
 
-        Task UpdateAsync(Order entity, CancellationToken ct = default);
-
-        Task<CaseQuote?> GetCurrentQuoteAsync(int caseId, CancellationToken ct = default);
-        Task<CaseStatusHistory?> GetCurrentStatusAsync(int caseId, CancellationToken ct = default);
-
-        Task<List<OrderCurrentSummaryDto>> GetCurrentSummariesAsync(
-            CancellationToken ct = default);
-
-        Task<bool> ExistsAsync(int caseId, CancellationToken ct = default);
-
-        Task<int> AddAsync(int customerId, int carId, string zipCode, DateTime now, CancellationToken token);
-        Task SetCurrentStatusAsync(long orderId, int statusId, DateTime? statusDateUtc, string changedBy, CancellationToken ct);
-
-        Task<string> GetOrderZipAsync(long orderId, CancellationToken ct);
-        Task SetCurrentBuyerQuoteAsync(long orderId, long? orderBuyerQuoteId, CancellationToken o);
-        Task<IEnumerable<SellCaseSummaryDto>> SearchSummariesAsync(OrderSearchFilter filter, CancellationToken ct);
+        Task<string> GetOrderZip(int orderId, CancellationToken ct);
+        Task SetCurrentBuyerQuote(int orderId, int? orderBuyerQuoteId, CancellationToken o);
+        Task<IEnumerable<OrderSummaryDto>> SearchSummaries(OrderSearchFilter filter, CancellationToken ct);
+        Task<bool> Exists(int orderId);
     }
 
-    public sealed record SellCaseSummaryDto(
-        long OrderId,
+    public sealed record OrderSummaryDto(
+        int OrderId,
         DateTime CreatedAtUtc,
         short CarYear,
         string Make,

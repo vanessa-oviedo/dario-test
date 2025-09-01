@@ -2,6 +2,6 @@
 {
     public interface IOrderBuyerQuoteWriteRepository
     {
-        Task<int> AddAsync(long orderId, int buyerZipCoverageId, decimal amount, DateTime createdAtUtc, CancellationToken ct);
+        Task<int> Add(int orderId, int buyerZipCoverageId, decimal amount, DateTime createdAtUtc, CancellationToken ct);
     }
 }

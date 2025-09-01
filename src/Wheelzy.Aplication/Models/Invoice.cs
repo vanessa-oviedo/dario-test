@@ -3,9 +3,9 @@ namespace Wheelzy.Application.Models;
 
 public class Invoice
 {
-    public long InvoiceId { get; set; }
+    public int InvoiceId { get; set; }
     public int CustomerId { get; set; }
-    public long? OrderId { get; set; }
+    public int? OrderId { get; set; }
     public decimal Amount { get; set; }
     public DateTime IssuedAt { get; set; }
     public DateTime? DueAt { get; set; }

@@ -6,41 +6,45 @@ namespace Wheelzy.Application.Services;
 
 public sealed class StatusService : IStatusService
 {
-    private readonly IOrderRepository _orders;
+    private readonly IOrderRepository _orderRepository;
     private readonly IUnitOfWork _uow;
     private readonly IClock _clock;
-    private readonly IOrderStatusHistoryRepository _history;
-    private readonly IOrderStatusReadRepository _statusReader;
+    private readonly IOrderStatusHistoryRepository _orderStatusHistoryRepository;
+    private readonly IOrderStatusReadRepository _orderStatusReadRepository;
 
-    public StatusService(IOrderRepository orders, IOrderStatusHistoryRepository history, IUnitOfWork uow, IClock clock, IOrderStatusReadRepository statusReader)
+    public StatusService(IOrderRepository orderRepository, IOrderStatusHistoryRepository orderStatusHistoryRepository, 
+        IUnitOfWork uow, IClock clock, 
+        IOrderStatusReadRepository orderStatusReadRepository)
     {
-        _orders = orders;
+        _orderRepository = orderRepository;
         _uow   = uow;
         _clock = clock;
-        _history = history;
-        _statusReader = statusReader;
+        _orderStatusHistoryRepository = orderStatusHistoryRepository;
+        _orderStatusReadRepository = orderStatusReadRepository;
     }
 
-    public async Task UpdateStatusAsync(
-        long orderId,
+    public async Task UpdateStatus(
+        int orderId,
         int newStatusId,
         DateTime? statusDate,
-        string changedBy,
         CancellationToken t = default)
     {
-        // Buscar el ID real de "Picked Up" en la BD (sin números mágicos)
-        var pickedUpId = await _statusReader.GetStatusIdByNameAsync("Picked Up", t);
+        var orderExists = await _orderRepository.Exists(orderId);
+        if (orderExists == false)
+        {
+            throw new DirectoryNotFoundException("Invalid Order");
+        }
 
-        // Si el nuevo estado es Picked Up y no viene fecha => error de negocio
+        var pickedUpId = await _orderStatusReadRepository.GetStatusIdByName("Picked Up", t);
+
         if (pickedUpId.HasValue && newStatusId == pickedUpId.Value && statusDate is null)
             throw new InvalidOperationException("Picked Up requires a status date.");
 
         await _uow.ExecuteInTransactionAsync(async (_) =>
         {
-            await _orders.SetCurrentStatusAsync(orderId, newStatusId, statusDate, changedBy, t);
-            await _history.AddAsync(orderId, newStatusId, statusDate.Value, changedBy, t); //watchdout here statusDate is nullale
-            await _uow.SaveChangesAsync(t);
+            await _orderRepository.SetCurrentStatus(orderId, newStatusId, statusDate, t);
+            await _orderStatusHistoryRepository.Add(orderId, newStatusId, statusDate.Value, t); //watchdout here statusDate is nullale
+            await _uow.SaveChanges(t);
         }, t);
     }
-
 }

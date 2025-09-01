@@ -2,6 +2,6 @@
 {
     public interface IOrderReadRepository
     {
-        Task<string> GetOrderZipAsync(long orderId, CancellationToken ct);
+        Task<string> GetOrderZipAsync(int orderId, CancellationToken ct);
     }
 }

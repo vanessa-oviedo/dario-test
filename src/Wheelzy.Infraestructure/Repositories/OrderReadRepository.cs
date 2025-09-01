@@ -9,7 +9,7 @@ namespace Wheelzy.Infrastructure.Repositories
         private readonly WheetzyDbContext _db;
         public OrderReadRepository(WheetzyDbContext db) => _db = db;
 
-        public async Task<string> GetOrderZipAsync(long orderId, CancellationToken ct)
+        public async Task<string> GetOrderZipAsync(int orderId, CancellationToken ct)
         {
             var zip = await _db.Orders.AsNoTracking()
                 .Where(o => o.OrderId == orderId)

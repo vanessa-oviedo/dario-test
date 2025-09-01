@@ -11,7 +11,7 @@ namespace Wheelzy.Infrastructure.Repositories
 
         public OrderStatusReadRepository(WheetzyDbContext db) => _db = db;
 
-        public async Task<int?> GetStatusIdByNameAsync(string name, CancellationToken ct = default)
+        public async Task<int?> GetStatusIdByName(string name, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(name)) return null;
 

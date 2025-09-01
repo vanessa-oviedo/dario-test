@@ -2,6 +2,6 @@
 {
     public interface IOrderStatusHistoryRepository
     {
-        Task AddAsync(long orderId, int statusId, DateTime statusDateUtc, string changedBy, CancellationToken token);
+        Task Add(int orderId, int statusId, DateTime statusDateUtc, CancellationToken token);
     }
 }

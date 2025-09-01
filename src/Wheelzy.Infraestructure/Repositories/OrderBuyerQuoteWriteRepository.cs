@@ -1,6 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Wheelzy.Application.Interfaces;
 using Wheelzy.Application.Interfaces.Repositories;
 using Wheelzy.Application.Models;
 using Wheelzy.Infrastructure.Persistence;
@@ -16,8 +15,8 @@ namespace Wheelzy.Infrastructure.Repositories
             _db = db;
         }
 
-        public async Task<int> AddAsync(
-            long orderId,
+        public async Task<int> Add(
+            int orderId,
             int buyerZipCoverageId,
             decimal amount,
             DateTime createdAtUtc,

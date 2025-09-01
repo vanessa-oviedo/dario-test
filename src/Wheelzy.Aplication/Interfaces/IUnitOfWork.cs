@@ -4,6 +4,6 @@
     {
         Task ExecuteInTransactionAsync(Func<object, Task> action, CancellationToken ct);
 
-        Task<int> SaveChangesAsync(CancellationToken ct = default);
+        Task<int> SaveChanges(CancellationToken ct = default);
     }
 }

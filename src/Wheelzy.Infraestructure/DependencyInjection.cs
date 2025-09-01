@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Wheelzy.Application.Interfaces;
 using Wheelzy.Application.Interfaces.Repositories;
+using Wheelzy.Application.Interfaces.Service;
+using Wheelzy.Application.Services;
 using Wheelzy.Infrastructure.Persistence;
 using Wheelzy.Infrastructure.Repositories;
 
@@ -24,9 +26,18 @@ namespace Wheelzy.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IClock, SystemClock>();
 
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IQuoteService, QuoteService>();
+            services.AddScoped<IStatusService, StatusService>();
+                        
+            services.AddScoped<IOrderStatusReadRepository, OrderStatusReadRepository>();
+            services.AddScoped<IOrderStatusHistoryRepository, OrderStatusHistoryRepository>();
             services.AddScoped<ICatalogRepository, CatalogRepository>();
-            services.AddScoped<IRateRepository, RateRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderBuyerQuoteWriteRepository, OrderBuyerQuoteWriteRepository>();
+            services.AddScoped<IBuyerZipCoverageReadRepository, BuyerZipCoverageReadRepository>();
+            services.AddScoped<IOrderBuyerQuoteWriteRepository, OrderBuyerQuoteWriteRepository>();
+            services.AddScoped<IOrderBuyerQuoteReadRepository, OrderBuyerQuoteReadRepository>();
 
             return services;
         }

@@ -10,7 +10,7 @@ namespace Wheelzy.Infrastructure
         private readonly Persistence.WheetzyDbContext _db;
         public UnitOfWork(Persistence.WheetzyDbContext db) => _db = db;
 
-        public Task<int> SaveChangesAsync(CancellationToken ct = default)
+        public Task<int> SaveChanges(CancellationToken ct = default)
             => _db.SaveChangesAsync(ct);
 
         public void Dispose() => _db.Dispose();

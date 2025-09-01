@@ -1,24 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Wheelzy.Application.DTOs.Case;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Wheelzy.API.Requests;
 using Wheelzy.Application.Interfaces.Service;
 
 namespace Wheelzy.Api.Controllers;
 
 [ApiController]
-[Route("cases/{caseId:int}/quotes")]
+[Route("orders/{orderId:int}/quotes")]
 public sealed class QuotesController : ControllerBase
 {
-    private readonly IQuoteService _quotes;
-    public QuotesController(IQuoteService quotes) => _quotes = quotes;
+    private readonly IQuoteService _quotesService;
+    private readonly IMapper _mapper;
 
-    /// <summary>Genera cotizaciones base por ZIP para el caso.</summary>
-    //[HttpPost("base")]
-    //public async Task<ActionResult<object>> GenerateBase([FromRoute] int caseId, [FromBody] GenerateBaseQuotesDto body, CancellationToken ct)
-    //{
-    //    var dto = new GenerateBaseQuotesDto { CaseId = caseId, SetBestAsCurrent = body.SetBestAsCurrent };
-    //    var inserted = await _quotes.GenerateBaseQuotesAsync(dto, ct);
-    //    return Ok(new { inserted });
-    //}
+    public QuotesController(IQuoteService quotesService, IMapper mapper)
+    {
+        _quotesService = quotesService;
+        _mapper = mapper;
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<object>> GenerateBase([FromBody] CreateQuoteRequest body, CancellationToken ct) //TODO: DONT USE OBJECT
+    {
+        var inserted = await _quotesService.GenerateBaseQuotes(_mapper.Map<Wheelzy.Application.Requests.CreateQuoteRequest>(body), ct);
+        return Ok(new { inserted });
+    }
 
     /// <summary>Setea la cotización actual.</summary>
     //[HttpPost("current")]

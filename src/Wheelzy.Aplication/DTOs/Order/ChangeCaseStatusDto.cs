@@ -1,6 +1,6 @@
 using Wheelzy.Application.Enums;
 
-namespace Wheelzy.Application.DTOs.Case;
+namespace Wheelzy.Application.DTOs.Order;
 
 public sealed class ChangeCaseStatusDto
 {

@@ -13,7 +13,7 @@ namespace Wheelzy.Infrastructure.Repositories
             _db = db;
         }
 
-        public Task<bool> ExistsForOrderAsync(long orderId, long orderBuyerQuoteId, CancellationToken ct = default)
+        public Task<bool> ExistsForOrderAsync(int orderId, int orderBuyerQuoteId, CancellationToken ct = default)
             => _db.OrderBuyerQuotes
                 .AsNoTracking()
                 .AnyAsync(q => q.OrderId == orderId && q.OrderBuyerQuoteId == orderBuyerQuoteId, ct);

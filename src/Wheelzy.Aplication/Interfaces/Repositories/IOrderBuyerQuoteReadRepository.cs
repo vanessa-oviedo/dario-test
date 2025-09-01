@@ -2,6 +2,6 @@
 {
     public interface IOrderBuyerQuoteReadRepository
     {
-        Task<bool> ExistsForOrderAsync(long orderId, long value, CancellationToken ct);
+        Task<bool> ExistsForOrderAsync(int orderId, int orderBuyerQuoteId, CancellationToken ct);
     }
 }

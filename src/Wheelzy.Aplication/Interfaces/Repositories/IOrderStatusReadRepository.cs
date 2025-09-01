@@ -2,6 +2,6 @@
 {
     public interface IOrderStatusReadRepository
     {
-        Task<int?> GetStatusIdByNameAsync(string name, CancellationToken ct = default);
+        Task<int?> GetStatusIdByName(string name, CancellationToken ct = default);
     }
 }

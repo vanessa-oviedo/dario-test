@@ -4,7 +4,7 @@
     {
         Task<IReadOnlyList<CoverageProjection>> GetByZipAsync(string zipCode, CancellationToken ct = default);
 
-        Task<(int BuyerZipCoverageId, decimal DefaultQuoteAmount)?> GetCoverageAsync(
+        Task<(int BuyerZipCoverageId, decimal DefaultQuoteAmount)?> GetCoverage(
             int buyerId, string zipCode, CancellationToken ct);
     }
 }

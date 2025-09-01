@@ -1,4 +1,4 @@
-using Wheelzy.Application.DTOs.Case;
+using Wheelzy.Application.DTOs.Order;
 using Wheelzy.Application.Models;
 
 namespace Wheelzy.Application.Services.Internals;

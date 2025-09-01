@@ -1,4 +1,4 @@
-namespace Wheelzy.Application.DTOs.Case;
+namespace Wheelzy.Application.DTOs.Order;
 
 public sealed class CreateSellCaseDto
 {
@@ -8,6 +8,4 @@ public sealed class CreateSellCaseDto
     public int CarId { get; init; }
     public string ZipCode { get; init; } = string.Empty;
     public DateTime? CreatedAtUtc { get; init; }
-
-    public string CreatedBy { get; set; } //TODO: Check if remov
 }

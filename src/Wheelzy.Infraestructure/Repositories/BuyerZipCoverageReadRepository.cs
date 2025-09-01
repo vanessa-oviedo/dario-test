@@ -31,7 +31,7 @@ namespace Wheelzy.Infrastructure.Repositories
                 .ToListAsync(ct);
         }
 
-        public async Task<(int BuyerZipCoverageId, decimal DefaultQuoteAmount)?> GetCoverageAsync(
+        public async Task<(int BuyerZipCoverageId, decimal DefaultQuoteAmount)?> GetCoverage(
             int buyerId, string zipCode, CancellationToken ct)
         {
             var res = await _db.BuyerZipCoverages.AsNoTracking()

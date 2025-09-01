@@ -11,7 +11,6 @@ namespace Wheelzy.Infrastructure.Configurations
             b.ToTable("OrderStatusHistory");
             b.HasKey(x => x.OrderStatusHistoryId);
 
-            b.Property(x => x.ChangedBy).HasMaxLength(200);
             b.Property(x => x.CreatedAt).HasDefaultValueSql("sysutcdatetime()");
 
             b.HasOne(x => x.Order)

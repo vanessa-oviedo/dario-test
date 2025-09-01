@@ -1,7 +1,7 @@
 ﻿namespace Wheelzy.Application.Interfaces.Queries
 {
     public sealed record OrderCurrentSummaryDto(
-        long OrderId,
+        int OrderId,
         short CarYear,
         string Make,
         string Model,

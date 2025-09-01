@@ -1,8 +1,8 @@
-namespace Wheelzy.Application.DTOs.Case;
+namespace Wheelzy.Application.DTOs.Order;
 
-public sealed class CaseSummaryDto
+public sealed class OrderSummaryDto
 {
-    public int CaseId { get; init; }
+    public int OrderId { get; init; }
     public short Year { get; init; }
     public string Make { get; init; } = string.Empty;
     public string Model { get; init; } = string.Empty;

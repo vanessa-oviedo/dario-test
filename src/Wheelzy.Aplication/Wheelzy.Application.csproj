@@ -7,13 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="DTOs\Buyer\" />
-    <Folder Include="Mapping\" />
+    <Compile Remove="DTOs\Buyer\**" />
+    <EmbeddedResource Remove="DTOs\Buyer\**" />
+    <None Remove="DTOs\Buyer\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Mapping\Profiles\" />
+    <Folder Include="Mapping\Registration\" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@ using AutoMapper;
 using Wheelzy.Application.DTOs.Catalog;
 using Wheelzy.Application.Models;
 
-namespace Wheelzy.Application.Mapping.Profiles;
+namespace Wheelzy.API.Mapping.Profiles;
 
 public sealed class CatalogMappingProfile : Profile
 {
