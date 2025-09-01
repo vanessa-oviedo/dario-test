@@ -1,6 +1,6 @@
 ﻿namespace Wheelzy.Application.Interfaces.Queries
 {
-    public sealed class CaseSearchFilter
+    public sealed class OrderSearchFilter
     {
         public DateTime? CreatedFromUtc { get; init; }
         public DateTime? CreatedToUtc { get; init; }
@@ -10,5 +10,6 @@
         public string? ZipCode { get; init; }
         public int? Skip { get; init; }
         public int? Take { get; init; }
+        public bool? IsActive { get; set; }
     }
 }

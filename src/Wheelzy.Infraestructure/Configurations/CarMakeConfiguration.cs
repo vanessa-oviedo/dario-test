@@ -4,14 +4,14 @@ using Wheelzy.Application.Models;
 
 namespace Wheelzy.Infrastructure.Configurations
 {
-    public sealed class ModelConfig : IEntityTypeConfiguration<Model>
+    public class CarMakeConfiguration : IEntityTypeConfiguration<CarMake>
     {
-        public void Configure(EntityTypeBuilder<Model> b)
+        public void Configure(EntityTypeBuilder<CarMake> b)
         {
-            b.ToTable("Model");
-            b.HasKey(x => x.Id);
+            b.ToTable("CarMake");
+            b.HasKey(x => x.MakeId);
             b.Property(x => x.Name).HasMaxLength(100).IsRequired();
-            b.HasIndex(x => new { x.MakeId, x.Name }).IsUnique();
+            b.HasIndex(x => x.Name).IsUnique();
         }
     }
 }

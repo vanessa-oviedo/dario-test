@@ -7,14 +7,19 @@ namespace Wheelzy.Infrastructure.Persistence
     {
         public WheetzyDbContext(DbContextOptions<WheetzyDbContext> options) : base(options) { }
 
-        public DbSet<Make> Makes => Set<Make>();
-        public DbSet<Model> Models => Set<Model>();
-        public DbSet<SubModel> SubModels => Set<SubModel>();
         public DbSet<Buyer> Buyers => Set<Buyer>();
+        public DbSet<BuyerZipCoverage> BuyerZipCoverages => Set<BuyerZipCoverage>();
+        public DbSet<CarMake> CarMakes => Set<CarMake>();
+        public DbSet<CarModel> CarModels => Set<CarModel>();
+        public DbSet<CarSubmodel> CarSubmodels => Set<CarSubmodel>();
         public DbSet<Car> Cars => Set<Car>();
-        public DbSet<SellCase> SellCases => Set<SellCase>();
-        public DbSet<CaseQuote> CaseQuotes => Set<CaseQuote>();
-        public DbSet<CaseStatusHistory> CaseStatusHistories => Set<CaseStatusHistory>();
+        public DbSet<Customer> Customers => Set<Customer>();
+        public DbSet<Invoice> Invoices => Set<Invoice>();
+        public DbSet<Order> Orders => Set<Order>();
+        public DbSet<OrderBuyerQuote> OrderBuyerQuotes => Set<OrderBuyerQuote>();
+        public DbSet<OrderStatus> OrderStatuses => Set<OrderStatus>();
+        public DbSet<OrderStatusHistory> OrderStatusHistories => Set<OrderStatusHistory>();
+        public DbSet<ZipCode> ZipCodes => Set<ZipCode>();
 
         // Infra-only entity for base rates by ZIP
         public DbSet<BuyerZipRate> BuyerZipRates => Set<BuyerZipRate>();

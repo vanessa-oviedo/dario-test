@@ -9,9 +9,19 @@ namespace Wheelzy.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<Car> b)
         {
             b.ToTable("Car");
-            b.HasKey(x => x.Id);
-            b.Property(x => x.Year).IsRequired();
-            b.HasOne<SubModel>().WithMany().HasForeignKey(x => x.SubModelId).OnDelete(DeleteBehavior.Restrict);
+            b.HasKey(x => x.CarId);
+
+            b.Property(x => x.Year);
+
+            b.HasOne(x => x.Submodel)
+                .WithMany(s => s.Cars)
+                .HasForeignKey(x => x.SubmodelId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasIndex(x => x.SubmodelId).HasDatabaseName("IX_Car_SubmodelId");
+
+            // CHECK (Year BETWEEN 1900 AND 2100)
+            b.ToTable(t => t.HasCheckConstraint("CK_Car_YearRange", "[Year] >= 1900 AND [Year] <= 2100"));
         }
     }
 }

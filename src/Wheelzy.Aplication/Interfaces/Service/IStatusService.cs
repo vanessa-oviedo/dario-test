@@ -1,8 +1,8 @@
-using Wheelzy.Application.DTOs.Case;
-
 namespace Wheelzy.Application.Interfaces.Service;
 
 public interface IStatusService
 {
-    Task ChangeStatusAsync(ChangeCaseStatusDto dto, CancellationToken ct = default);
+    Task UpdateStatusAsync(
+        long orderId, int newStatusId, DateTime? statusDate, string changedBy,
+        CancellationToken t = default);
 }

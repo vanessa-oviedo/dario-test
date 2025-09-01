@@ -4,14 +4,14 @@ using Wheelzy.Application.Models;
 
 namespace Wheelzy.Infrastructure.Configurations
 {
-    public sealed class SubModelConfig : IEntityTypeConfiguration<SubModel>
+    public class OrderStatusConfiguration : IEntityTypeConfiguration<OrderStatus>
     {
-        public void Configure(EntityTypeBuilder<SubModel> b)
+        public void Configure(EntityTypeBuilder<OrderStatus> b)
         {
-            b.ToTable("SubModel");
-            b.HasKey(x => x.Id);
+            b.ToTable("OrderStatus");
+            b.HasKey(x => x.StatusId);
             b.Property(x => x.Name).HasMaxLength(100).IsRequired();
-            b.HasIndex(x => new { x.ModelId, x.Name }).IsUnique();
+            b.HasIndex(x => x.Name).IsUnique();
         }
     }
 }

@@ -5,7 +5,7 @@ using Wheelzy.Application.Interfaces.Service;
 namespace Wheelzy.Api.Controllers;
 
 [ApiController]
-[Route("cases/{caseId:int}/status")]
+[Route("cases/{orderId:int}/status")]
 public sealed class StatusController : ControllerBase
 {
     private readonly IStatusService _status;
@@ -13,16 +13,9 @@ public sealed class StatusController : ControllerBase
 
     /// <summary>Cambia el estado del caso.</summary>
     [HttpPost]
-    public async Task<IActionResult> Change([FromRoute] int caseId, [FromBody] ChangeCaseStatusDto body, CancellationToken ct)
+    public async Task<IActionResult> Change([FromRoute] int orderId, [FromBody] ChangeCaseStatusDto body, CancellationToken ct)
     {
-        var dto = new ChangeCaseStatusDto
-        {
-            CaseId = caseId,
-            NewStatus = body.NewStatus,
-            StatusDateUtc = body.StatusDateUtc,
-            ChangedBy = string.IsNullOrWhiteSpace(body.ChangedBy) ? "api" : body.ChangedBy
-        };
-        await _status.ChangeStatusAsync(dto, ct);
+        await _status.UpdateStatusAsync(orderId, (int)body.NewStatus, body.StatusDateUtc, "system",  ct);
         return NoContent();
     }
 }

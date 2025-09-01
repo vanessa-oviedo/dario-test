@@ -13,7 +13,6 @@ public static class ApplicationMappingRegistration
         services.AddAutoMapper(cfg =>
         {
             cfg.AddProfile<CatalogMappingProfile>();
-            cfg.AddProfile<BuyerMappingProfile>();
             cfg.AddProfile<CaseMappingProfile>();
         });
         return services;

@@ -1,0 +1,44 @@
+using Microsoft.EntityFrameworkCore;
+
+public async Task UpdateCustomersBalanceByInvoicesAsync(
+    IReadOnlyCollection<Invoice> invoices,
+    CancellationToken ct = default)
+{
+    // 0) guardas de entrada
+    if (invoices is null || invoices.Count == 0) return;
+
+    // Filtra inválidos; evita nulls y montos <= 0
+    var valid = invoices
+        .Where(i => i is not null && i.CustomerId != null && i.Amount > 0)
+        .ToList();
+
+    if (valid.Count == 0) return;
+
+    await using var tx = await dbContext.Database.BeginTransactionAsync(ct);
+
+    // 1) Persistir invoices (trazabilidad). Si ya existen, omite este AddRange.
+    dbContext.Invoices.AddRange(valid);
+    await dbContext.SaveChangesAsync(ct);
+
+    // 2) Agrupar deltas por cliente (en memoria)
+    var deltas = valid
+        .GroupBy(i => i.CustomerId!.Value)
+        .ToDictionary(g => g.Key, g => g.Sum(i => i.Amount));
+
+    // 3) Aplicar los deltas con UPDATE atómico en DB (evita lost update)
+    //    Un UPDATE por cliente (simple y robusto). Para miles, ver nota TVP abajo.
+    foreach (var (customerId, delta) in deltas)
+    {
+        var affected = await dbContext.Customers
+            .Where(c => c.CustomerId == customerId)
+            .ExecuteUpdateAsync(up =>
+                up.SetProperty(c => c.Balance, c => c.Balance - delta),
+                ct);
+
+        // (opcional) validar que el cliente exista
+        if (affected == 0)
+            throw new InvalidOperationException($"Customer {customerId} not found.");
+    }
+
+    await tx.CommitAsync(ct);
+}

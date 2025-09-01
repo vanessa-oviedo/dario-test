@@ -1,45 +1,46 @@
-using Wheelzy.Application.DTOs.Case;
-using Wheelzy.Application.Enums;
 using Wheelzy.Application.Interfaces;
 using Wheelzy.Application.Interfaces.Repositories;
 using Wheelzy.Application.Interfaces.Service;
-using Wheelzy.Application.Models;
 
 namespace Wheelzy.Application.Services;
 
 public sealed class StatusService : IStatusService
 {
-    private readonly ICaseRepository _cases;
+    private readonly IOrderRepository _orders;
     private readonly IUnitOfWork _uow;
     private readonly IClock _clock;
+    private readonly IOrderStatusHistoryRepository _history;
+    private readonly IOrderStatusReadRepository _statusReader;
 
-    public StatusService(ICaseRepository cases, IUnitOfWork uow, IClock clock)
+    public StatusService(IOrderRepository orders, IOrderStatusHistoryRepository history, IUnitOfWork uow, IClock clock, IOrderStatusReadRepository statusReader)
     {
-        _cases = cases;
+        _orders = orders;
         _uow   = uow;
         _clock = clock;
+        _history = history;
+        _statusReader = statusReader;
     }
 
-    public async Task ChangeStatusAsync(ChangeCaseStatusDto dto, CancellationToken ct = default)
+    public async Task UpdateStatusAsync(
+        long orderId,
+        int newStatusId,
+        DateTime? statusDate,
+        string changedBy,
+        CancellationToken t = default)
     {
-        var agg = await _cases.GetByIdAsync(dto.CaseId, includeRelated: true, ct)
-                  ?? throw new InvalidOperationException("Case no encontrado.");
+        // Buscar el ID real de "Picked Up" en la BD (sin números mágicos)
+        var pickedUpId = await _statusReader.GetStatusIdByNameAsync("Picked Up", t);
 
-        if (dto.NewStatus == CaseStatus.PickedUp && dto.StatusDateUtc is null)
-            throw new InvalidOperationException("PickedUp requiere StatusDateUtc.");
+        // Si el nuevo estado es Picked Up y no viene fecha => error de negocio
+        if (pickedUpId.HasValue && newStatusId == pickedUpId.Value && statusDate is null)
+            throw new InvalidOperationException("Picked Up requires a status date.");
 
-        foreach (var s in agg.StatusHistory) s.IsCurrent = false;
-
-        agg.StatusHistory.Add(new CaseStatusHistory
+        await _uow.ExecuteInTransactionAsync(async (_) =>
         {
-            Status        = dto.NewStatus,
-            StatusDateUtc = dto.StatusDateUtc,
-            ChangedBy     = string.IsNullOrWhiteSpace(dto.ChangedBy) ? "system" : dto.ChangedBy,
-            IsCurrent     = true,
-            CreatedAtUtc  = _clock.UtcNow
-        });
-
-        await _cases.UpdateAsync(agg, ct);
-        await _uow.SaveChangesAsync(ct);
+            await _orders.SetCurrentStatusAsync(orderId, newStatusId, statusDate, changedBy, t);
+            await _history.AddAsync(orderId, newStatusId, statusDate.Value, changedBy, t); //watchdout here statusDate is nullale
+            await _uow.SaveChangesAsync(t);
+        }, t);
     }
+
 }

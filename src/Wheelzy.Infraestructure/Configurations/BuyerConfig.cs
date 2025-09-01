@@ -9,7 +9,7 @@ namespace Wheelzy.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<Buyer> b)
         {
             b.ToTable("Buyer");
-            b.HasKey(x => x.Id);
+            b.HasKey(x => x.BuyerId);
             b.Property(x => x.Name).HasMaxLength(200).IsRequired();
             b.HasIndex(x => x.Name).IsUnique();
         }

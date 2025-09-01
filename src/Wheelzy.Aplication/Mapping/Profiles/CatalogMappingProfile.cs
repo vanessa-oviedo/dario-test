@@ -8,8 +8,8 @@ public sealed class CatalogMappingProfile : Profile
 {
     public CatalogMappingProfile()
     {
-        CreateMap<Make, MakeDto>();
-        CreateMap<Model, ModelDto>();
-        CreateMap<SubModel, SubModelDto>();
+        CreateMap<CarMake, MakeDto>();
+        CreateMap<CarModel, ModelDto>();
+        CreateMap<CarSubmodel, SubModelDto>();
     }
 }

@@ -2,7 +2,8 @@
 {
     public interface IUnitOfWork
     {
-        /// <summary>Persiste todos los cambios pendientes de la unidad de trabajo actual.</summary>
+        Task ExecuteInTransactionAsync(Func<object, Task> action, CancellationToken ct);
+
         Task<int> SaveChangesAsync(CancellationToken ct = default);
     }
 }

@@ -1,7 +1,14 @@
 namespace Wheelzy.Application.DTOs.Case;
 
-public sealed class GenerateBaseQuotesDto
-{
-    public int CaseId { get; init; }
-    public bool SetBestAsCurrent { get; init; } = false;
-}
+public sealed record CreateQuoteCommand(
+    int OrderId,
+    int BuyerId,
+    decimal? AmountOverride = null,
+    string? CreatedBy = null,
+    DateTime? NowUtc = null
+);
+
+public sealed record CreateQuoteResult(
+    int OrderBuyerQuoteId,
+    decimal AmountUsed
+);

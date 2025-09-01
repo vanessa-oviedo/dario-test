@@ -2,8 +2,12 @@
 {
     public class Car
     {
-        public int Id { get; set; }
-        public short Year { get; set; }   // Validaremos rango en Services o Configurations
-        public int SubModelId { get; set; }
+        public int CarId { get; set; }
+        public short Year { get; set; }
+
+        public int SubmodelId { get; set; }
+        public CarSubmodel Submodel { get; set; } = null!;
+
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }

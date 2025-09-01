@@ -4,6 +4,7 @@ namespace Wheelzy.Application.Interfaces.Service;
 
 public interface IQuoteService
 {
-    Task<int> GenerateBaseQuotesAsync(GenerateBaseQuotesDto dto, CancellationToken ct = default);
-    Task SetCurrentQuoteAsync(SetCurrentQuoteDto dto, CancellationToken ct = default);
+    Task<int> GenerateBaseQuotesAsync(CreateQuoteCommand dto, CancellationToken ct = default);
+
+    Task SetCurrentQuoteAsync(long orderId, long? orderBuyerQuoteId, CancellationToken t = default);
 }

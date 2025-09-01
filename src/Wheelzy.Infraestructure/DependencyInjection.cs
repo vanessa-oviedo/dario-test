@@ -25,9 +25,8 @@ namespace Wheelzy.Infrastructure
             services.AddSingleton<IClock, SystemClock>();
 
             services.AddScoped<ICatalogRepository, CatalogRepository>();
-            services.AddScoped<IBuyerRepository, BuyerRepository>();
             services.AddScoped<IRateRepository, RateRepository>();
-            services.AddScoped<ICaseRepository, CaseRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             return services;
         }
