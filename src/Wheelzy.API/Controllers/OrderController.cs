@@ -31,7 +31,7 @@ public sealed class OrderController : ControllerBase
     }
 
     [HttpPost("set-status")]
-    public async Task<IActionResult> SetStatus([FromBody] ChangeCaseStatusRequest request, CancellationToken ct)
+    public async Task<IActionResult> SetStatus([FromBody] ChangeOrderStatusRequest request, CancellationToken ct)
     {
         await _statusService.UpdateStatus(request.OrderId.Value, (int)request.NewStatus, request.StatusDateUtc, ct);
         return NoContent();

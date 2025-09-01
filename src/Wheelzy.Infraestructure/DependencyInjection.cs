@@ -30,15 +30,12 @@ namespace Wheelzy.Infrastructure
             services.AddScoped<IQuoteService, QuoteService>();
             services.AddScoped<IStatusService, StatusService>();
                         
-            services.AddScoped<IOrderStatusReadRepository, OrderStatusReadRepository>();
+            services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
             services.AddScoped<IOrderStatusHistoryRepository, OrderStatusHistoryRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IOrderBuyerQuoteWriteRepository, OrderBuyerQuoteWriteRepository>();
-            services.AddScoped<IBuyerZipCoverageReadRepository, BuyerZipCoverageReadRepository>();
-            services.AddScoped<IOrderBuyerQuoteWriteRepository, OrderBuyerQuoteWriteRepository>();
-            services.AddScoped<IOrderBuyerQuoteReadRepository, OrderBuyerQuoteReadRepository>();
-            services.AddScoped<IOrderBuyerQuoteRepository, OrderBuyerQuoteRepository>(); 
-
+            services.AddScoped<IBuyerZipCoverageRepository, BuyerZipCoverageRepository>();
+            services.AddScoped<IOrderBuyerQuoteRepository, OrderBuyerQuoteRepository>();
+            
             return services;
         }
     }

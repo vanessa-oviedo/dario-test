@@ -10,11 +10,11 @@ public sealed class StatusService : IStatusService
     private readonly IUnitOfWork _uow;
     private readonly IClock _clock;
     private readonly IOrderStatusHistoryRepository _orderStatusHistoryRepository;
-    private readonly IOrderStatusReadRepository _orderStatusReadRepository;
+    private readonly IOrderStatusRepository _orderStatusReadRepository;
 
     public StatusService(IOrderRepository orderRepository, IOrderStatusHistoryRepository orderStatusHistoryRepository, 
         IUnitOfWork uow, IClock clock, 
-        IOrderStatusReadRepository orderStatusReadRepository)
+        IOrderStatusRepository orderStatusReadRepository)
     {
         _orderRepository = orderRepository;
         _uow   = uow;

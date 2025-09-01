@@ -1,4 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
 using Wheelzy.API.Mapping.Profiles;
 
 namespace Wheelzy.Application.Mapping.Registration
@@ -9,7 +8,6 @@ namespace Wheelzy.Application.Mapping.Registration
         {
             services.AddAutoMapper(cfg =>
             {
-                cfg.AddProfile<CatalogMappingProfile>();
                 cfg.AddProfile<OrderMappingProfile>();
             });
             return services;

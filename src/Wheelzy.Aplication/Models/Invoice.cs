@@ -1,5 +1,4 @@
-﻿// Invoice.cs
-namespace Wheelzy.Application.Models;
+﻿namespace Wheelzy.Application.Models;
 
 public class Invoice
 {

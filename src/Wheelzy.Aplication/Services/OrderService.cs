@@ -13,10 +13,10 @@ public sealed class OrderService : IOrderService
     private readonly IOrderRepository _orderRepository;
     private readonly IUnitOfWork _uow;
     private readonly IClock _clock;
-    private readonly IOrderStatusReadRepository _statusReaderRepository;
+    private readonly IOrderStatusRepository _statusReaderRepository;
     private readonly IOrderStatusHistoryRepository _historyWriterRepository;
 
-    public OrderService(IOrderRepository orderRepository, IUnitOfWork uow, IClock clock, IOrderStatusReadRepository statusReaderRepository, IOrderStatusHistoryRepository historyWriterRepository)
+    public OrderService(IOrderRepository orderRepository, IUnitOfWork uow, IClock clock, IOrderStatusRepository statusReaderRepository, IOrderStatusHistoryRepository historyWriterRepository)
     {
         _orderRepository   = orderRepository;
         _uow     = uow;
@@ -53,7 +53,7 @@ public sealed class OrderService : IOrderService
     }
 
 
-    public async Task<PageResult<Interfaces.Repositories.OrderSummaryDto>> SearchSummaries(SearchOrdersRequest req, CancellationToken token = default)
+    public async Task<PageResult<OrderSummaryDto>> SearchSummaries(SearchOrdersRequest req, CancellationToken token = default)
     {
         var filter = new OrderSearchFilter
         {
@@ -69,7 +69,7 @@ public sealed class OrderService : IOrderService
 
         var rows = await _orderRepository.SearchSummaries(filter, token);
         
-        return new PageResult<Interfaces.Repositories.OrderSummaryDto>
+        return new PageResult<OrderSummaryDto>
         {
             Items = rows.ToList(),
             Total = rows.Count()

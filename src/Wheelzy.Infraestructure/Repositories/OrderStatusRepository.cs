@@ -4,11 +4,11 @@ using Wheelzy.Infrastructure.Persistence;
 
 namespace Wheelzy.Infrastructure.Repositories
 {
-    public class OrderStatusReadRepository : IOrderStatusReadRepository
+    public class OrderStatusRepository : IOrderStatusRepository
     {
         private readonly WheetzyDbContext _db;
 
-        public OrderStatusReadRepository(WheetzyDbContext db) => _db = db;
+        public OrderStatusRepository(WheetzyDbContext db) => _db = db;
 
         public async Task<int?> GetStatusIdByName(string name, CancellationToken ct = default)
         {

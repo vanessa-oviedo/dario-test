@@ -4,11 +4,11 @@ using Wheelzy.Infrastructure.Persistence;
 
 namespace Wheelzy.Infrastructure.Repositories
 {
-    public class BuyerZipCoverageReadRepository : IBuyerZipCoverageReadRepository
+    public class BuyerZipCoverageRepository : IBuyerZipCoverageRepository
     {
         private readonly WheetzyDbContext _db;
 
-        public BuyerZipCoverageReadRepository(WheetzyDbContext db)
+        public BuyerZipCoverageRepository(WheetzyDbContext db)
         {
             _db = db;
         }

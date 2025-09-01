@@ -19,10 +19,10 @@ public sealed class QuotesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<object>> GenerateBase([FromBody] CreateQuoteRequest body, CancellationToken ct)
+    public async Task<ActionResult<int>> GenerateBase([FromBody] CreateQuoteRequest body, CancellationToken ct) //TODO: DONT USE OBJECT
     {
         var inserted = await _quotesService.GenerateBaseQuotes(_mapper.Map<Wheelzy.Application.Requests.CreateQuoteRequest>(body), ct);
-        return Ok(new { inserted });
+        return Ok(inserted);
     }
 
     /// <summary>Setea la cotización actual.</summary>
