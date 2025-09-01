@@ -10,6 +10,7 @@ public sealed record SearchOrdersRequest(DateTime? CreatedFromUtc, DateTime? Cre
 public sealed record CreateQuoteRequest(
     int OrderId,
     int BuyerId,
+    string ZipCode,
     decimal? AmountOverride = null,
     string? CreatedBy = null,
     DateTime? NowUtc = null

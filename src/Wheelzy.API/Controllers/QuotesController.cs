@@ -6,7 +6,7 @@ using Wheelzy.Application.Interfaces.Service;
 namespace Wheelzy.Api.Controllers;
 
 [ApiController]
-[Route("orders/{orderId:int}/quotes")]
+[Route("orders/quotes")]
 public sealed class QuotesController : ControllerBase
 {
     private readonly IQuoteService _quotesService;
@@ -19,7 +19,7 @@ public sealed class QuotesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<object>> GenerateBase([FromBody] CreateQuoteRequest body, CancellationToken ct) //TODO: DONT USE OBJECT
+    public async Task<ActionResult<object>> GenerateBase([FromBody] CreateQuoteRequest body, CancellationToken ct)
     {
         var inserted = await _quotesService.GenerateBaseQuotes(_mapper.Map<Wheelzy.Application.Requests.CreateQuoteRequest>(body), ct);
         return Ok(new { inserted });

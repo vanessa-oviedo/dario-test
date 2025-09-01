@@ -59,7 +59,7 @@ namespace Wheelzy.Infrastructure.Repositories
             return zip.TrimEnd();
         }
 
-        public async Task SetCurrentBuyerQuote(int orderId, int? orderBuyerQuoteId, CancellationToken ct)
+        public async Task SetCurrentBuyerQuote(int orderId, int orderBuyerQuoteId, string zipCode, CancellationToken ct)
         {
             var affected = await _db.Orders
                 .Where(o => o.OrderId == orderId)

@@ -6,5 +6,5 @@ public interface IQuoteService
 {
     Task<int> GenerateBaseQuotes(CreateQuoteRequest dto, CancellationToken token = default);
 
-    Task SetCurrentQuote(int orderId, int? orderBuyerQuoteId, CancellationToken token = default);
+    Task SetCurrentQuote(int orderId, string zipCode, CancellationToken token = default);
 }

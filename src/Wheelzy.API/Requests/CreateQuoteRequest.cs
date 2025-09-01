@@ -11,6 +11,9 @@ namespace Wheelzy.API.Requests
         public int? BuyerId { get; set; }
 
         [Required]
+        public string ZipCode { get; set; }
+
+        [Required]
         public decimal? AmountOverride { get; set; }
     }
 }

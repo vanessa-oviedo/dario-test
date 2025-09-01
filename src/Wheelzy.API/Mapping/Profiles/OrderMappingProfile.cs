@@ -10,11 +10,12 @@ public sealed class OrderMappingProfile : Profile
     {
         CreateMap<Requests.CreateQuoteRequest, CreateQuoteRequest>()
            .ConstructUsing(src => new CreateQuoteRequest(
-               src.OrderId ?? 0,       // OrderId
-               src.BuyerId ?? 0,       // BuyerId
-               src.AmountOverride,     // AmountOverride
-               null,                   // CreatedBy
-               DateTime.UtcNow         // NowUtc
+               src.OrderId ?? 0,       
+               src.BuyerId ?? 0,
+               src.ZipCode ?? string.Empty, 
+               src.AmountOverride,     
+               null,                  
+               DateTime.UtcNow     
            ));
 
         CreateMap<Requests.SearchOrdersRequest, SearchOrdersRequest>()
