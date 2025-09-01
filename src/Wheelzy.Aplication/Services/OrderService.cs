@@ -67,7 +67,7 @@ public sealed class OrderService : IOrderService
             Take           = req.Page.Take
         };
 
-        var rows = await _orderRepository.SearchSummaries(filter, token);
+        var rows = await _orderRepository.GetOrders(filter, token);
         
         return new PageResult<OrderSummaryDto>
         {
