@@ -35,7 +35,7 @@ namespace CodeRefactorTool
 
                     return root.DescendantNodes()
                         .OfType<MethodDeclarationSyntax>()
-                        .Where(m => m.Modifiers.Any(SyntaxKind.AsyncKeyword) && !m.Identifier.Text.EndsWith("Async"))
+                        .Where(m => m.Modifiers.Any(SyntaxKind.AsyncKeyword) && !m.Identifier.Text.EndsWith("Async") && m.Identifier.Text != "Main")
                         .Select(m => model.GetDeclaredSymbol(m))
                         .Where(s => s != null)!;
                 }).ToList();
