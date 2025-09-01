@@ -25,7 +25,7 @@ public sealed class OrderService : IOrderService
         _historyWriterRepository = historyWriterRepository;
     }
 
-    public async Task<int> Create(CreateSellCaseDto dto, CancellationToken token = default)
+    public async Task<int> Create(CreateOrderDto dto, CancellationToken token = default)
     {
         var now = dto.CreatedAtUtc ?? DateTime.UtcNow;
         var orderId = 0;

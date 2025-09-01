@@ -6,6 +6,6 @@ namespace Wheelzy.Application.Interfaces.Service;
 
 public interface IOrderService
 {
-    Task<int> Create(CreateSellCaseDto dto, CancellationToken ct = default);
+    Task<int> Create(CreateOrderDto dto, CancellationToken ct = default);
     Task<PageResult<OrderSummaryDto>> SearchSummaries(SearchOrdersRequest req, CancellationToken ct = default);
 }

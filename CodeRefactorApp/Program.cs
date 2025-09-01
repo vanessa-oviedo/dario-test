@@ -66,7 +66,7 @@ namespace CodeRefactorTool
                     var root = await document.GetSyntaxRootAsync();
                     if (root == null) continue;
 
-                    var rewriter = new VmDtoAndBlankLineRewriter();
+                    var rewriter = new VMDTOAndBlankLineRewriter();
                     var newRoot = rewriter.Visit(root);
 
                     if (newRoot != root)

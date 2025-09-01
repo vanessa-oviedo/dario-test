@@ -1,6 +1,6 @@
 namespace Wheelzy.Application.DTOs.Order;
 
-public sealed class CreateSellCaseDto
+public sealed class CreateOrderDto
 {
     public bool SetInitialStatus;
 

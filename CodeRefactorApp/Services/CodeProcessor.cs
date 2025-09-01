@@ -3,12 +3,12 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Rename;
 using Microsoft.CodeAnalysis;
 
-class AsyncVmDtoRewriter : CSharpSyntaxRewriter
+class AsyncVMDTORewriter: CSharpSyntaxRewriter
 {
     private readonly SemanticModel _model;
     private readonly Solution _solution;
 
-    public AsyncVmDtoRewriter(SemanticModel model, Solution solution)
+    public AsyncVMDTORewriter(SemanticModel model, Solution solution)
     {
         _model = model;
         _solution = solution;
