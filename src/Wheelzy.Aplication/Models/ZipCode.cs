@@ -7,5 +7,6 @@
 
         public ICollection<BuyerZipCoverage> BuyerCoverages { get; set; } = new List<BuyerZipCoverage>();
         public ICollection<Order> Orders { get; set; } = new List<Order>();
+        public ICollection<Customer> Customers { get; set; } = new List<Customer>();
     }
 }

@@ -9,5 +9,6 @@
         public CarSubmodel Submodel { get; set; } = null!;
 
         public ICollection<Order> Orders { get; set; } = new List<Order>();
+        public ICollection<CustomerCar> CustomerCars { get; set; } = new List<CustomerCar>();
     }
 }
