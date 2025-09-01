@@ -32,7 +32,6 @@ namespace Wheelzy.Infrastructure
                         
             services.AddScoped<IOrderStatusReadRepository, OrderStatusReadRepository>();
             services.AddScoped<IOrderStatusHistoryRepository, OrderStatusHistoryRepository>();
-            services.AddScoped<ICatalogRepository, CatalogRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderBuyerQuoteWriteRepository, OrderBuyerQuoteWriteRepository>();
             services.AddScoped<IBuyerZipCoverageReadRepository, BuyerZipCoverageReadRepository>();

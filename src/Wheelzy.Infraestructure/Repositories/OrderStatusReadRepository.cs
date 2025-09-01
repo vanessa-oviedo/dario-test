@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Wheelzy.Application.Interfaces.Repositories;
 using Wheelzy.Infrastructure.Persistence;
 

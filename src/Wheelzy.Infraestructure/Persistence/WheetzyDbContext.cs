@@ -20,8 +20,6 @@ namespace Wheelzy.Infrastructure.Persistence
         public DbSet<OrderStatus> OrderStatuses => Set<OrderStatus>();
         public DbSet<OrderStatusHistory> OrderStatusHistories => Set<OrderStatusHistory>();
         public DbSet<ZipCode> ZipCodes => Set<ZipCode>();
-
-        // Infra-only entity for base rates by ZIP
         public DbSet<BuyerZipRate> BuyerZipRates => Set<BuyerZipRate>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
