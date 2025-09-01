@@ -1,0 +1,21 @@
+I wanted to share some ideas that came up while working on the exercise. The goal is to make things easier to read, faster to query, and simpler to keep in sync.
+
+Statuses
+It helps to keep the current status directly on the Order table (id, date, who changed it). That way we don’t have to scan the entire history every time. The full history still lives in OrderStatusHistory. For “Picked Up”, we can enforce that a date is always present with a simple CHECK constraint.
+
+Quotes
+Instead of marking quotes as “current”, the Order can just point to the chosen one with CurrentOrderBuyerQuoteId. This makes reads faster and keeps history clean. For pricing, the baseline amount lives in BuyerZipCoverage, while the actual bid goes into OrderBuyerQuote. That way buyers can bid differently depending on ZIP and order.
+
+Queries
+With EF, we can make queries lighter by projecting only what we need, using AsNoTracking(), and applying filters directly. Summary queries should use LEFT JOIN since not every order will have a status or quote yet. For very frequent queries, compiled queries could be worth it.
+
+Denormalization
+Sometimes it’s worth saving extra info on the order itself (like car details, buyer name, current quote, current status) so dashboards and lists are faster. We’d just update these fields when things change.
+
+Indexes & validation
+A few targeted indexes (on current status, current quote, ZIP, vehicle chain, etc.) would make common lookups much faster. On top of that, constraints for money > 0, valid years, and unique values help keep data clean.
+
+Caching
+Catalogs like statuses, car models, or ZIP codes don’t change much, so we can cache them (e.g., Redis) to save hits to the DB.
+
+Overall, this setup tries to keep reads snappy, writes straightforward, and the business rules properly enforced both in the app and the database.
