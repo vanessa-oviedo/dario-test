@@ -10,6 +10,6 @@ namespace Wheelzy.Application.Interfaces.Strategy
 {
     public interface IQuoteSelectionStrategy
     {
-        Task<IEnumerable<OrderBuyerQuote?>> Select(int orderId);
+        Task<OrderBuyerQuote?> Select(int orderId);
     }
 }

@@ -11,14 +11,14 @@ namespace Wheelzy.Infrastructure.Repositories
         private readonly WheetzyDbContext _db;
 
         public OrderBuyerQuoteRepository(WheetzyDbContext db) => _db = db;
-
-        public async Task<IEnumerable<OrderBuyerQuote?>> GetByOrderIDandMaxAmmountAsync(int orderID)
+       
+        public async Task<OrderBuyerQuote?> getByOrderIDandMaxAmmountAsync(int orderID)
         {
-            var orderBuyerQuoteResult = _db.OrderBuyerQuotes
+            var orderBuyerQuoteResult =await _db.OrderBuyerQuotes
                 .Where(obq => obq.OrderId == orderID)
-                .OrderByDescending(obq => obq.Amount);
+                .OrderByDescending(obq => obq.Amount).FirstOrDefaultAsync();
             
-            return await orderBuyerQuoteResult.ToListAsync();
+            return orderBuyerQuoteResult;
         }
 
         public async Task<int> Add(

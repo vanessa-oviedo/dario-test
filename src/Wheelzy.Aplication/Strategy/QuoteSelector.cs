@@ -18,7 +18,7 @@ namespace Wheelzy.Application.Strategy
             _quoteSelectionStrategy = strategy;
         }
 
-        public async Task<IEnumerable<OrderBuyerQuote?>> GetBestQuote(int orderId)
+        public async Task<OrderBuyerQuote?> GetBestQuote(int orderId)
         {
             return await _quoteSelectionStrategy.Select(orderId);
         }
