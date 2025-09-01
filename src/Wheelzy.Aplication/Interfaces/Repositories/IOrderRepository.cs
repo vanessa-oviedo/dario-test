@@ -9,7 +9,7 @@ namespace Wheelzy.Application.Interfaces.Repositories
         Task SetCurrentStatus(int orderId, int statusId, DateTime? statusDateUtc, CancellationToken ct);
         Task<string> GetOrderZip(int orderId, CancellationToken ct);
         Task SetCurrentBuyerQuote(int orderId, int orderBuyerQuoteId, string zipCode, CancellationToken o);
-        Task<IEnumerable<OrderSummaryDto>> SearchSummaries(OrderSearchFilter filter, CancellationToken ct);
+        Task<IEnumerable<OrderSummaryDto>> GetOrders(OrderSearchFilter filter, CancellationToken ct);
         Task<bool> Exists(int orderId);
     }
 }

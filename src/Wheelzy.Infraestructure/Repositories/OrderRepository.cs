@@ -65,7 +65,7 @@ namespace Wheelzy.Infrastructure.Repositories
                 throw new KeyNotFoundException($"Order {orderId} not found.");
         }
 
-        public async Task<IEnumerable<OrderSummaryDto>> SearchSummaries(OrderSearchFilter filter, CancellationToken ct)
+        public async Task<IEnumerable<OrderSummaryDto>> GetOrders(OrderSearchFilter filter, CancellationToken ct)
         {
             IQueryable<Order> orders = _db.Orders.AsNoTracking();
 

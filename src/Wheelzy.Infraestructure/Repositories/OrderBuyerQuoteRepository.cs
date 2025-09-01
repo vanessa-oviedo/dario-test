@@ -12,7 +12,7 @@ namespace Wheelzy.Infrastructure.Repositories
 
         public OrderBuyerQuoteRepository(WheetzyDbContext db) => _db = db;
        
-        public async Task<OrderBuyerQuote?> GetByOrderIDandMaxAmmountAsync(int orderID)
+        public async Task<OrderBuyerQuote?> GetByOrderIDandMaxAmount(int orderID)
         {
             var orderBuyerQuoteResult =await _db.OrderBuyerQuotes
                 .Where(obq => obq.OrderId == orderID)
