@@ -2,12 +2,12 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace CodeRefactorTool
+namespace CodeRefactorApp.Services
 {
     /// <summary>
     /// Rewriter to normalize VM/DTO suffixes and insert blank lines between methods/interfaces.
     /// </summary>
-    class VMDTOAndBlankLineRewriter: CSharpSyntaxRewriter
+    public class VMDTOAndBlankLineRewriter: CSharpSyntaxRewriter
     {
         public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
         {
@@ -19,20 +19,6 @@ namespace CodeRefactorTool
             node = node.WithMembers(InsertBlankLines(node.Members));
 
             return base.VisitClassDeclaration(node);
-        }
-
-
-
-        public override SyntaxNode VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
-        {
-            // Normalize VM/DTO suffix in interface name
-            var newName = NormalizeVmDto(node.Identifier.Text);
-            node = node.WithIdentifier(SyntaxFactory.Identifier(newName));
-
-            // Insert blank lines between members
-            node = node.WithMembers(InsertBlankLines(node.Members));
-
-            return base.VisitInterfaceDeclaration(node);
         }
 
 
@@ -60,7 +46,6 @@ namespace CodeRefactorTool
 
             return newMembers;
         }
-
 
 
 

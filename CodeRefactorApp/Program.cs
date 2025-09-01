@@ -3,11 +3,11 @@ using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Rename;
 using Microsoft.CodeAnalysis.CSharp;
+using CodeRefactorApp.Services;
 
-namespace CodeRefactorTool
+namespace CodeRefactorApp
 {
-    class Program
-    {
+    class Program    {
         static async Task Main(string[] args)
         {
             Console.WriteLine("Enter the path to the solution (.sln) or project (.csproj):");
@@ -90,6 +90,8 @@ namespace CodeRefactorTool
             workspace.TryApplyChanges(solution);
         }
 
+
+
         /// <summary>
         /// Returns true if the type name ends with Vm, Vms, Dto, or Dtos.
         /// </summary>
@@ -100,6 +102,8 @@ namespace CodeRefactorTool
                 || name.EndsWith("Dto")
                 || name.EndsWith("Dtos");
         }
+
+
 
         private static async Task<Solution> RenameTypeWithReferencesAsync(Solution solution, INamedTypeSymbol symbol)
         {
@@ -112,6 +116,8 @@ namespace CodeRefactorTool
 
             return solution;
         }
+
+
 
         private static string NormalizeVmDto(string name)
         {
