@@ -13,10 +13,10 @@ public sealed class OrderService : IOrderService
     private readonly IOrderRepository _orderRepository;
     private readonly IUnitOfWork _uow;
     private readonly IClock _clock;
-    private readonly IOrderStatusReadRepository _statusReaderRepository;
+    private readonly IOrderStatusRepository _statusReaderRepository;
     private readonly IOrderStatusHistoryRepository _historyWriterRepository;
 
-    public OrderService(IOrderRepository orderRepository, IUnitOfWork uow, IClock clock, IOrderStatusReadRepository statusReaderRepository, IOrderStatusHistoryRepository historyWriterRepository)
+    public OrderService(IOrderRepository orderRepository, IUnitOfWork uow, IClock clock, IOrderStatusRepository statusReaderRepository, IOrderStatusHistoryRepository historyWriterRepository)
     {
         _orderRepository   = orderRepository;
         _uow     = uow;
