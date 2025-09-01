@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheelzy.Application", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheelzy.Infrastructure", "src\Wheelzy.Infraestructure\Wheelzy.Infrastructure.csproj", "{921D1717-4D80-76C4-891F-4BAE6B9DAB05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeRefactorApp", "CodeRefactorApp\CodeRefactorApp.csproj", "{58441426-F4AC-4A46-B76D-6A6C8D90D7F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheelzy.RefactorApp", "CodeRefactorApp\Wheelzy.RefactorApp.csproj", "{58441426-F4AC-4A46-B76D-6A6C8D90D7F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

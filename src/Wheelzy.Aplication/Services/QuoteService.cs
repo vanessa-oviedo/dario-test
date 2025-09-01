@@ -52,14 +52,14 @@ public sealed class QuoteService : IQuoteService
 
             newQuoteId = quote.OrderBuyerQuoteId;
             
-            await SetCurrentQuote(request.OrderId, request.ZipCode, newQuoteId, amountUsed, ct);
+            await SetCurrentQuote(request.OrderId, newQuoteId, amountUsed, ct);
 
         }, ct);
 
         return newQuoteId;
     }
 
-    public async Task SetCurrentQuote(int orderId, string zipCode, int quoteIdCreated, decimal quoteAmountCreated, CancellationToken t = default)
+    public async Task SetCurrentQuote(int orderId, int quoteIdCreated, decimal quoteAmountCreated, CancellationToken t = default)
     {
         var quoteIdToUse = quoteIdCreated;
         var quoteSelector = await new QuoteSelector(new MaxAmountQuoteStrategy(_orderBuyerQuoteRepository)).GetBestQuote(orderId);
@@ -67,6 +67,6 @@ public sealed class QuoteService : IQuoteService
         if (quoteSelector != null && quoteSelector.Amount > quoteAmountCreated)
             quoteIdToUse = quoteSelector.OrderBuyerQuoteId;
 
-        await _orderRepository.SetCurrentBuyerQuote(orderId, quoteIdToUse, zipCode, t);
+        await _orderRepository.SetCurrentBuyerQuote(orderId, quoteIdToUse, t);
     }
 }

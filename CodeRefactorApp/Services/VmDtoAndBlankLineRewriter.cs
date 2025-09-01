@@ -2,7 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace CodeRefactorApp.Services
+namespace Wheelzy.RefactorApp.Services
 {
     /// <summary>
     /// Rewriter to normalize VM/DTO suffixes and insert blank lines between methods/interfaces.

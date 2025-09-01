@@ -12,7 +12,6 @@ public sealed class OrderMappingProfile : Profile
            .ConstructUsing(src => new CreateQuoteRequest(
                src.OrderId ?? 0,       
                src.BuyerId ?? 0,
-               src.ZipCode ?? string.Empty, 
                src.Amount,     
                null,                  
                DateTime.UtcNow     

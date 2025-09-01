@@ -1,11 +1,11 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.MSBuild;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Rename;
 using Microsoft.CodeAnalysis.CSharp;
-using CodeRefactorApp.Services;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.MSBuild;
+using Microsoft.CodeAnalysis.Rename;
+using Wheelzy.RefactorApp.Services;
 
-namespace CodeRefactorApp
+namespace Wheelzy.RefactorApp
 {
     class Program    {
         static async Task Main(string[] args)
