@@ -4,7 +4,7 @@ namespace Wheelzy.Application.Interfaces.Repositories
 {
     public interface IOrderBuyerQuoteRepository
     {
-        Task<OrderBuyerQuote?> GetByOrderIDandMaxAmmountAsync(int orderID);
+        Task<OrderBuyerQuote?> GetByOrderIDandMaxAmount(int orderID);
 
         Task<OrderBuyerQuote> Add(
             int orderId,
