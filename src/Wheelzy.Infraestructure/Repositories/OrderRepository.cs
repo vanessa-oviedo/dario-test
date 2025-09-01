@@ -9,13 +9,8 @@ namespace Wheelzy.Infrastructure.Repositories
     public sealed class OrderRepository : IOrderRepository
     {
         private readonly WheetzyDbContext _db;
-        public OrderRepository(WheetzyDbContext db1) => _db = db1;
 
-        public Task UpdateAsync(Order entity, CancellationToken ct = default)
-        {
-            _db.Orders.Update(entity);
-            return Task.CompletedTask;
-        }
+        public OrderRepository(WheetzyDbContext db1) => _db = db1;
 
         public async Task<int> Add(int customerId, int carId, string zipCode, DateTime now, CancellationToken token)
         {
