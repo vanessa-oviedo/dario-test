@@ -1,8 +1,6 @@
 using Wheelzy.Application.Interfaces;
 using Wheelzy.Application.Interfaces.Repositories;
 using Wheelzy.Application.Interfaces.Service;
-using Wheelzy.Application.Interfaces.Strategy;
-using Wheelzy.Application.Models;
 using Wheelzy.Application.Requests;
 using Wheelzy.Application.Strategy;
 
@@ -13,21 +11,18 @@ public sealed class QuoteService : IQuoteService
     private readonly IOrderRepository _orderRepository;
     private readonly IUnitOfWork _uow;
     private readonly IClock _clock;
-    private readonly IBuyerZipCoverageReadRepository _coverageRepository;
-    private readonly IOrderBuyerQuoteWriteRepository _quotesRepository;
+    private readonly IBuyerZipCoverageRepository _coverageRepository;
     private readonly IOrderBuyerQuoteRepository _orderBuyerQuoteRepository;
 
     public QuoteService(IOrderRepository orderRepository,
         IUnitOfWork uow, IClock clock,
-        IOrderBuyerQuoteWriteRepository quotesRepository,
-        IBuyerZipCoverageReadRepository coverageRepository,
+        IBuyerZipCoverageRepository coverageRepository,
         IOrderBuyerQuoteRepository orderBuyerQuoteRepository)
     {
         _orderRepository = orderRepository;
         _uow = uow;
         _clock = clock;
         _coverageRepository = coverageRepository;
-        _quotesRepository = quotesRepository;
         _orderBuyerQuoteRepository = orderBuyerQuoteRepository;
     }
 
@@ -52,7 +47,7 @@ public sealed class QuoteService : IQuoteService
             if (amountUsed <= 0)
                 throw new ArgumentOutOfRangeException(nameof(request.AmountOverride), "Amount must be > 0.");
 
-            newQuoteId = await _quotesRepository.Add(request.OrderId, buyerZipCoverageId, amountUsed, now, ct);
+            newQuoteId = await _orderBuyerQuoteRepository.Add(request.OrderId, buyerZipCoverageId, amountUsed, now, ct);
 
             //Here logic setting the current quote.
             await SetCurrentQuote(request.OrderId, request.ZipCode, ct);

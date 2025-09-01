@@ -33,11 +33,9 @@ namespace Wheelzy.Infrastructure
             services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
             services.AddScoped<IOrderStatusHistoryRepository, OrderStatusHistoryRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IOrderBuyerQuoteWriteRepository, OrderBuyerQuoteWriteRepository>();
-            services.AddScoped<IBuyerZipCoverageReadRepository, BuyerZipCoverageReadRepository>();
-            services.AddScoped<IOrderBuyerQuoteWriteRepository, OrderBuyerQuoteWriteRepository>();
-            services.AddScoped<IOrderBuyerQuoteReadRepository, OrderBuyerQuoteReadRepository>();
-
+            services.AddScoped<IBuyerZipCoverageRepository, BuyerZipCoverageRepository>();
+            services.AddScoped<IOrderBuyerQuoteRepository, OrderBuyerQuoteRepository>();
+            
             return services;
         }
     }
