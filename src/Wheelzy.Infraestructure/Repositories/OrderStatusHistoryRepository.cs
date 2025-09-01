@@ -8,8 +8,7 @@ namespace Wheelzy.Infrastructure.Repositories
     public class OrderStatusHistoryRepository : IOrderStatusHistoryRepository
     {
         private readonly WheetzyDbContext _db;
-        private const string PickedUpName = "Picked Up"; //TODO: MOVE TO A CONSTANTS CLASS
-
+        
         public OrderStatusHistoryRepository(WheetzyDbContext db)
         {
             _db = db;
@@ -26,8 +25,8 @@ namespace Wheelzy.Infrastructure.Repositories
             if (statusName is null)
                 throw new InvalidOperationException($"OrderStatus not found for id={statusId}");
 
-            if (string.Equals(statusName, PickedUpName, StringComparison.OrdinalIgnoreCase))
-                throw new InvalidOperationException($"Status '{PickedUpName}' requires a status date.");
+            if (string.Equals(statusName, Constants.PickedUpStatusName, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException($"Status '{Constants.PickedUpStatusName}' requires a status date.");
 
             var row = new OrderStatusHistory
             {

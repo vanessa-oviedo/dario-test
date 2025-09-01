@@ -43,7 +43,7 @@ public sealed class StatusService : IStatusService
         await _uow.ExecuteInTransactionAsync(async (_) =>
         {
             await _orderRepository.SetCurrentStatus(orderId, newStatusId, statusDate, t);
-            await _orderStatusHistoryRepository.Add(orderId, newStatusId, statusDate.Value, t); //watchdout here statusDate is nullale
+            await _orderStatusHistoryRepository.Add(orderId, newStatusId, DateTime.UtcNow, t);
             await _uow.SaveChanges(t);
         }, t);
     }

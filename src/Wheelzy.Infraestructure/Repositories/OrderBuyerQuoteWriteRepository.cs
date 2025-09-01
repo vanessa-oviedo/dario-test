@@ -35,11 +35,10 @@ namespace Wheelzy.Infrastructure.Repositories
             try
             {
                 await _db.OrderBuyerQuotes.AddAsync(entity, ct);
-                return entity.BuyerZipCoverageId; // el OrderBuyerQuoteId se setea tras SaveChanges
+                return entity.BuyerZipCoverageId;
             }
             catch (DbUpdateException ex) when (IsUniqueViolation(ex, "UQ_Quote_Per_Case_Buyer"))
             {
-                // Un buyer no puede ofertar dos veces para la misma order
                 throw new InvalidOperationException(
                     $"BuyerZipCoverage {buyerZipCoverageId} already has a quote for Order {orderId}.", ex);
             }
@@ -47,7 +46,6 @@ namespace Wheelzy.Infrastructure.Repositories
 
         private static bool IsUniqueViolation(DbUpdateException ex, string constraintName)
         {
-            // SQL Server: 2627 (PK/Unique), 2601 (Unique index)
             return ex.InnerException is SqlException sqlEx &&
                    (sqlEx.Number == 2627 || sqlEx.Number == 2601) &&
                    (sqlEx.Message?.Contains(constraintName) ?? false);

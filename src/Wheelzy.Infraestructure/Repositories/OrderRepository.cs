@@ -55,7 +55,6 @@ namespace Wheelzy.Infrastructure.Repositories
             if (zip is null)
                 throw new KeyNotFoundException($"Order {orderId} not found.");
 
-            // ZipCode es CHAR(5) en la BD: quitamos padding derecho si lo hubiera
             return zip.TrimEnd();
         }
 
@@ -72,7 +71,6 @@ namespace Wheelzy.Infrastructure.Repositories
 
         public async Task<IEnumerable<OrderSummaryDto>> SearchSummaries(OrderSearchFilter filter, CancellationToken ct)
         {
-            // 0) Base query (solo Orders) + filtros opcionales
             IQueryable<Order> orders = _db.Orders.AsNoTracking();
 
             if (filter.CreatedFromUtc.HasValue)
@@ -84,7 +82,7 @@ namespace Wheelzy.Infrastructure.Repositories
                 orders = orders.Where(o => o.CreatedAt < endExclusive);
             }
 
-            if (filter.CustomerIds?.Count() > 0) // <-- corregido
+            if (filter.CustomerIds?.Count() > 0)
                 orders = orders.Where(o => filter.CustomerIds.Contains(o.CustomerId));
 
             if (filter.Statuses?.Count() > 0)
@@ -105,7 +103,6 @@ namespace Wheelzy.Infrastructure.Repositories
                 }
             }
 
-            // 1) JOINs necesarios (auto)
             var query =
                 from o in orders
                 join car in _db.Cars.AsNoTracking() on o.CarId equals car.CarId
@@ -122,17 +119,14 @@ namespace Wheelzy.Infrastructure.Repositories
                     mk
                 };
 
-            // 2) Traer datos a memoria para los DTOs (solo la parte que EF Core no puede traducir)
             var list = query
-                .AsEnumerable() // <-- EF deja de traducir a SQL, ahora LINQ normal
+                .AsEnumerable()
                 .Select(x =>
                 {
-                    // status actual
                     var currentStatusName = _db.OrderStatuses
                         .AsNoTracking()
                         .FirstOrDefault(s => s.StatusId == x.o.CurrentStatusId)?.Name;
 
-                    // quote actual
                     var cq = (from q in _db.OrderBuyerQuotes.AsNoTracking()
                               join z in _db.BuyerZipCoverages.AsNoTracking() on q.BuyerZipCoverageId equals z.BuyerZipCoverageId
                               join b in _db.Buyers.AsNoTracking() on z.BuyerId equals b.BuyerId

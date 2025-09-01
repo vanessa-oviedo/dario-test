@@ -1,6 +1,5 @@
 using Wheelzy.Application.DTOs.Order;
 using Wheelzy.Application.DTOs.Common;
-using Wheelzy.Application.Interfaces.Repositories;
 using Wheelzy.Application.Requests;
 
 namespace Wheelzy.Application.Interfaces.Service;

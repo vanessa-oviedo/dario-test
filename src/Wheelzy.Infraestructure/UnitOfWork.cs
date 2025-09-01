@@ -4,7 +4,6 @@ using Wheelzy.Application.Interfaces;
 
 namespace Wheelzy.Infrastructure
 {
-    //TODO: REMOVE COMMENTS IN SPANISH
     public sealed class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly Persistence.WheetzyDbContext _db;
@@ -17,17 +16,13 @@ namespace Wheelzy.Infrastructure
 
         public async Task ExecuteInTransactionAsync(Func<object, Task> action, CancellationToken ct)
         {
-            // Usa la estrategia de ejecución del proveedor (SQL Server: reintentos ante errores transitorios)
             var strategy = _db.Database.CreateExecutionStrategy();
 
             await strategy.ExecuteAsync(async () =>
             {
-                // Si ya existe una transacción (p. ej. llamada anidada), usá savepoint si está disponible;
-                // si no, simplemente ejecutá la acción dentro de la transacción existente.
                 var currentTx = _db.Database.CurrentTransaction;
                 if (currentTx is not null)
                 {
-                    // EF Core 7/8: savepoints (SQL Server los soporta)
                     var savepoint = "sp_" + Guid.NewGuid().ToString("N");
                     try
                     {
@@ -36,18 +31,16 @@ namespace Wheelzy.Infrastructure
                     }
                     catch
                     {
-                        // revertir solo lo hecho por esta acción
                         await currentTx.RollbackToSavepointAsync(savepoint, ct);
                         throw;
                     }
                     return;
                 }
 
-                // No había transacción: creamos una y controlamos commit/rollback
                 await using var tx = await _db.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, ct);
                 try
                 {
-                    await action(ct);          // tus services llaman SaveChangesAsync cuando corresponda
+                    await action(ct);      
                     await tx.CommitAsync(ct);
                 }
                 catch

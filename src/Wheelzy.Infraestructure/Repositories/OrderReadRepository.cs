@@ -16,7 +16,7 @@ namespace Wheelzy.Infrastructure.Repositories
                 .Select(o => o.ZipCode)
                 .SingleOrDefaultAsync(ct);
 
-            if (zip is null) throw new KeyNotFoundException(); //TODO: Handle errors
+            if (zip is null) throw new KeyNotFoundException();
             return zip.TrimEnd();
         }
     }
