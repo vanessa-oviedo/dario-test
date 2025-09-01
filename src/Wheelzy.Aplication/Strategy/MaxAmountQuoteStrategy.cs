@@ -10,7 +10,7 @@ namespace Wheelzy.Application.Strategy
 
         public async Task<OrderBuyerQuote?> Select(int orderId)
         {
-            return await _orderBuyerQuoteRepository.getByOrderIDandMaxAmmountAsync(orderId);
+            return await _orderBuyerQuoteRepository.GetByOrderIDandMaxAmmountAsync(orderId);
         }
     }
 }

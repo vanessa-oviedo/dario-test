@@ -12,7 +12,7 @@ namespace Wheelzy.Infrastructure.Repositories
 
         public OrderBuyerQuoteRepository(WheetzyDbContext db) => _db = db;
        
-        public async Task<OrderBuyerQuote?> getByOrderIDandMaxAmmountAsync(int orderID)
+        public async Task<OrderBuyerQuote?> GetByOrderIDandMaxAmmountAsync(int orderID)
         {
             var orderBuyerQuoteResult =await _db.OrderBuyerQuotes
                 .Where(obq => obq.OrderId == orderID)
@@ -21,7 +21,7 @@ namespace Wheelzy.Infrastructure.Repositories
             return orderBuyerQuoteResult;
         }
 
-        public async Task<int> Add(
+        public async Task<OrderBuyerQuote> Add(
             int orderId,
             int buyerZipCoverageId,
             decimal amount,
@@ -40,8 +40,8 @@ namespace Wheelzy.Infrastructure.Repositories
 
             try
             {
-                await _db.OrderBuyerQuotes.AddAsync(entity, ct);
-                return entity.BuyerZipCoverageId;
+                var entry = await _db.OrderBuyerQuotes.AddAsync(entity, ct);
+                return entry.Entity;    
             }
             catch (DbUpdateException ex) when (IsUniqueViolation(ex, "UQ_Quote_Per_Case_Buyer"))
             {
@@ -49,6 +49,7 @@ namespace Wheelzy.Infrastructure.Repositories
                     $"BuyerZipCoverage {buyerZipCoverageId} already has a quote for Order {orderId}.", ex);
             }
         }
+
 
         private static bool IsUniqueViolation(DbUpdateException ex, string constraintName)
         {
