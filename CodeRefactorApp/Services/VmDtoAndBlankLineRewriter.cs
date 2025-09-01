@@ -7,7 +7,7 @@ namespace CodeRefactorTool
     /// <summary>
     /// Rewriter to normalize VM/DTO suffixes and insert blank lines between methods/interfaces.
     /// </summary>
-    class VmDtoAndBlankLineRewriter : CSharpSyntaxRewriter
+    class VMDTOAndBlankLineRewriter: CSharpSyntaxRewriter
     {
         public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
         {
@@ -21,6 +21,8 @@ namespace CodeRefactorTool
             return base.VisitClassDeclaration(node);
         }
 
+
+
         public override SyntaxNode VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
         {
             // Normalize VM/DTO suffix in interface name
@@ -33,6 +35,8 @@ namespace CodeRefactorTool
             return base.VisitInterfaceDeclaration(node);
         }
 
+
+
         private SyntaxList<MemberDeclarationSyntax> InsertBlankLines(SyntaxList<MemberDeclarationSyntax> members)
         {
             var newMembers = new SyntaxList<MemberDeclarationSyntax>();
@@ -40,17 +44,25 @@ namespace CodeRefactorTool
             for (int i = 0; i < members.Count; i++)
             {
                 var member = members[i];
-                newMembers = newMembers.Add(member);
 
+                // Only add extra blank lines if it's not the last member
                 if (i < members.Count - 1)
                 {
-                    var trivia = member.GetTrailingTrivia().Add(SyntaxFactory.CarriageReturnLineFeed).Add(SyntaxFactory.CarriageReturnLineFeed);
-                    newMembers = newMembers.Replace(member, member.WithTrailingTrivia(trivia));
+                    var trailingTrivia = member.GetTrailingTrivia()
+                        .Add(SyntaxFactory.CarriageReturnLineFeed)
+                        .Add(SyntaxFactory.CarriageReturnLineFeed);
+
+                    member = member.WithTrailingTrivia(trailingTrivia);
                 }
+
+                newMembers = newMembers.Add(member);
             }
 
             return newMembers;
         }
+
+
+
 
         private string NormalizeVmDto(string name)
         {
