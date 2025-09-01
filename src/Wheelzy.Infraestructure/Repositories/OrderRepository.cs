@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Wheelzy.Application.DTOs.Order;
 using Wheelzy.Application.Interfaces.Queries;
 using Wheelzy.Application.Interfaces.Repositories;
 using Wheelzy.Application.Models;

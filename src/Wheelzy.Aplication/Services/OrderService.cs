@@ -53,7 +53,7 @@ public sealed class OrderService : IOrderService
     }
 
 
-    public async Task<PageResult<Interfaces.Repositories.OrderSummaryDto>> SearchSummaries(SearchOrdersRequest req, CancellationToken token = default)
+    public async Task<PageResult<OrderSummaryDto>> SearchSummaries(SearchOrdersRequest req, CancellationToken token = default)
     {
         var filter = new OrderSearchFilter
         {
@@ -69,7 +69,7 @@ public sealed class OrderService : IOrderService
 
         var rows = await _orderRepository.SearchSummaries(filter, token);
         
-        return new PageResult<Interfaces.Repositories.OrderSummaryDto>
+        return new PageResult<OrderSummaryDto>
         {
             Items = rows.ToList(),
             Total = rows.Count()
