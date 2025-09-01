@@ -8,7 +8,7 @@ namespace Wheelzy.Application.Strategy
     {
         private readonly IOrderBuyerQuoteRepository _orderBuyerQuoteRepository = orderBuyerQuoteRepository;
 
-        public async Task<IEnumerable<OrderBuyerQuote?>> Select(int orderId)
+        public async Task<OrderBuyerQuote?> Select(int orderId)
         {
             return await _orderBuyerQuoteRepository.getByOrderIDandMaxAmmountAsync(orderId);
         }

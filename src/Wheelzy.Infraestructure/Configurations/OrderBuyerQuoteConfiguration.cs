@@ -11,6 +11,10 @@ namespace Wheelzy.Infrastructure.Configurations
             b.ToTable("OrderBuyerQuote");
             b.HasKey(x => x.OrderBuyerQuoteId);
 
+            b.Property(x => x.OrderBuyerQuoteId)
+                .UseIdentityColumn()     // fuerza IDENTITY(1,1)
+                .ValueGeneratedOnAdd();
+
             b.Property(x => x.Amount).HasColumnType("money");
             b.Property(x => x.CreatedAt).HasDefaultValueSql("sysutcdatetime()");
 

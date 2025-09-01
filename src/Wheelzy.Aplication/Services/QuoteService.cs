@@ -54,8 +54,7 @@ public sealed class QuoteService : IQuoteService
 
             newQuoteId = await _quotesRepository.Add(request.OrderId, buyerZipCoverageId, amountUsed, now, ct);
 
-            //Here logic setting the current quote.
-            await SetCurrentQuote(request.OrderId, request.ZipCode, ct);
+            await SetCurrentQuote(request.OrderId, request.ZipCode, newQuoteId, amountUsed, ct);
 
             await _uow.SaveChanges(ct);
         }, ct);
@@ -63,14 +62,14 @@ public sealed class QuoteService : IQuoteService
         return newQuoteId;
     }
 
-    public async Task SetCurrentQuote(int orderId, string zipCode, CancellationToken t = default)
+    public async Task SetCurrentQuote(int orderId, string zipCode, int quoteIdCreated, decimal quoteAmountCreated, CancellationToken t = default)
     {
-        var quoteSelector = new QuoteSelector(new MaxAmountQuoteStrategy(_orderBuyerQuoteRepository)).GetBestQuote(orderId).Result;
+        var quoteIdToUse = quoteIdCreated;
+        var quoteSelector = await new QuoteSelector(new MaxAmountQuoteStrategy(_orderBuyerQuoteRepository)).GetBestQuote(orderId);
 
-        if (quoteSelector.FirstOrDefault() == null)
-            throw new InvalidOperationException(
-                $"Test");
+        if (quoteSelector != null && quoteSelector.Amount > quoteAmountCreated)
+            quoteIdToUse = quoteSelector.OrderBuyerQuoteId;
 
-        await _orderRepository.SetCurrentBuyerQuote(orderId, quoteSelector.FirstOrDefault().OrderBuyerQuoteId, zipCode, t);
+        await _orderRepository.SetCurrentBuyerQuote(orderId, quoteIdToUse, zipCode, t);
     }
 }

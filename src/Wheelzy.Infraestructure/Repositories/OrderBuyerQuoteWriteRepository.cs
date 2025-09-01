@@ -35,7 +35,7 @@ namespace Wheelzy.Infrastructure.Repositories
             try
             {
                 await _db.OrderBuyerQuotes.AddAsync(entity, ct);
-                return entity.BuyerZipCoverageId;
+                return entity.OrderBuyerQuoteId;
             }
             catch (DbUpdateException ex) when (IsUniqueViolation(ex, "UQ_Quote_Per_Case_Buyer"))
             {
