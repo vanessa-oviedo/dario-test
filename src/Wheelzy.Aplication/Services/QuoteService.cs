@@ -31,7 +31,7 @@ public sealed class QuoteService : IQuoteService
     {
         var now = DateTime.UtcNow;
         var newQuoteId = 0;
-        decimal amountUsed = 0m;
+        var amountUsed = 0m;
 
         await _uow.ExecuteInTransactionAsync(async (_) =>
         {
@@ -47,11 +47,12 @@ public sealed class QuoteService : IQuoteService
             if (amountUsed <= 0)
                 throw new ArgumentOutOfRangeException(nameof(request.AmountOverride), "Amount must be > 0.");
 
-            newQuoteId = await _orderBuyerQuoteRepository.Add(request.OrderId, buyerZipCoverageId, amountUsed, now, ct);
-
-            await SetCurrentQuote(request.OrderId, request.ZipCode, newQuoteId, amountUsed, ct);
-
+            var quote = await _orderBuyerQuoteRepository.Add(request.OrderId, buyerZipCoverageId, amountUsed, now, ct);
             await _uow.SaveChanges(ct);
+
+            newQuoteId = quote.OrderBuyerQuoteId;
+            
+            await SetCurrentQuote(request.OrderId, request.ZipCode, newQuoteId, amountUsed, ct);
         }, ct);
 
         return newQuoteId;
