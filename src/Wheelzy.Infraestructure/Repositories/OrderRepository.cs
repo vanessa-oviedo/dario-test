@@ -150,6 +150,7 @@ namespace Wheelzy.Infrastructure.Repositories
 
             return list;
         }
+        
         public async Task<IEnumerable<OrderSummaryDto>> GetOrdersByTSQL(OrderSearchFilter filter, CancellationToken ct)
         {
             //TODO: Implement filtering in TSQL version
