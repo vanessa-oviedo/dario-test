@@ -144,16 +144,59 @@ namespace Wheelzy.Infrastructure.Repositories
                         x.o.CurrentStatusDate
                     );
                 })
-                .OrderByDescending(d => d.CreatedAtUtc)
+                .OrderByDescending(d => d.CreatedAt)
                 .ThenBy(d => d.OrderId)
                 .ToList();
 
             return list;
         }
+        public async Task<IEnumerable<OrderSummaryDto>> GetOrdersByTSQL(OrderSearchFilter filter, CancellationToken ct)
+        {
+            //TODO: Implement filtering in TSQL version
+
+            var orders = await GetOrdersWithTSQL(ct);
+
+            return orders;
+        }
 
         public async Task<bool> Exists(int orderId)
         {
             return await _db.Orders.AnyAsync(a => a.OrderId == orderId);
+        }
+
+        public async Task<List<OrderSummaryDto>> GetOrdersWithTSQL(CancellationToken token)
+        {
+            var result = await _db.Database
+                .SqlQuery<OrderSummaryDto>($@"
+                    SELECT
+                    o.OrderId,
+                    c.[Year]                  AS CarYear,
+                    mk.[Name]                 AS Make,
+                    md.[Name]                 AS [Model],
+                    sm.[Name]                 AS SubModel,
+                    b.[Name]                  AS CurrentBuyerName,
+                    obq.[Amount]              AS CurrentQuoteAmount,
+                    st.[Name]                 AS CurrentStatusName,
+                    o.[CurrentStatusDate]     AS CurrentStatusDate, 
+                    o.CreatedAt               AS CreatedAt
+                    FROM dbo.[Order] AS o
+                    JOIN dbo.Car           AS c   ON c.CarId        = o.CarId
+                    JOIN dbo.CarSubmodel   AS sm  ON sm.SubmodelId  = c.SubmodelId
+                    JOIN dbo.CarModel      AS md  ON md.ModelId     = sm.ModelId
+                    JOIN dbo.CarMake       AS mk  ON mk.MakeId      = md.MakeId
+                    LEFT JOIN dbo.OrderBuyerQuote AS obq
+                           ON obq.OrderId = o.OrderId
+                          AND obq.OrderBuyerQuoteId = o.CurrentOrderBuyerQuoteId
+                    LEFT JOIN dbo.BuyerZipCoverage AS bzc
+                           ON bzc.BuyerZipCoverageId = obq.BuyerZipCoverageId
+                    LEFT JOIN dbo.Buyer AS b
+                           ON b.BuyerId = bzc.BuyerId
+                    LEFT JOIN dbo.OrderStatus AS st
+                           ON st.StatusId = o.CurrentStatusId
+                    ORDER BY o.OrderId;
+                ")
+                .ToListAsync(token);
+            return result; 
         }
     }
 }

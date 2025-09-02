@@ -2,7 +2,7 @@
 {
     public sealed record OrderSummaryDto(
         int OrderId,
-        DateTime CreatedAtUtc,
+        DateTime CreatedAt,
         short CarYear,
         string Make,
         string Model,
@@ -10,6 +10,6 @@
         string? CurrentBuyerName,
         decimal? CurrentQuoteAmount,
         string? CurrentStatusName,
-        DateTime? CurrentStatusDateUtc
+        DateTime? CurrentStatusDate
     );
 }

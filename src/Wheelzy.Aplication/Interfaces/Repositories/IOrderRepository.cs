@@ -10,6 +10,9 @@ namespace Wheelzy.Application.Interfaces.Repositories
         Task<string> GetOrderZip(int orderId, CancellationToken ct);
         Task SetCurrentBuyerQuote(int orderId, int orderBuyerQuoteId, CancellationToken o);
         Task<IEnumerable<OrderSummaryDto>> GetOrders(OrderSearchFilter filter, CancellationToken ct);
+        Task<IEnumerable<OrderSummaryDto>> GetOrdersByTSQL(OrderSearchFilter filter, CancellationToken ct);
         Task<bool> Exists(int orderId);
+
+        Task<List<OrderSummaryDto>> GetOrdersWithTSQL(CancellationToken token);
     }
 }
